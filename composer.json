@@ -87,7 +87,8 @@
         "phpspec/phpspec": "~2.1",
         "codeception/codeception": "*",
         "codeception/c3": "~2.0",
-        "symfony/dom-crawler": "~3.0"
+        "symfony/dom-crawler": "~3.0",
+        "laravel/homestead": "^3.0"
     },
     "autoload": {
         "classmap": [
