@@ -19,6 +19,8 @@ class InvoiceDesignsSeeder extends Seeder
             'Hipster',
             'Playful',
             'Photo',
+            'Custom', //11
+            'Wagxw', //12
         ];
         
         for ($i=0; $i<count($designs); $i++) {

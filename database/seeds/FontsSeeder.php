@@ -15,6 +15,17 @@ class FontsSeeder extends Seeder
     {
         $fonts = [
             [
+                'folder' => 'glypha',
+                'name' => 'Glypha',
+                'css_stack' => "'Glypha', Arial, Helvetica, sans-serif",
+                'google_font' => '',
+                'normal' => 'glyphaltstd-webfont.ttf',
+                'bold' => 'glyphaltstd-bold-webfont.ttf',
+                'italics' => 'glyphaltstd-oblique-webfont.ttf',
+                'bolditalics' => 'glyphaltstd-boldoblique-webfont.ttf',
+                'sort_order' => 50,
+            ], 
+            [
                 'folder' => 'roboto',
                 'name' => 'Roboto',
                 'css_stack' => "'Roboto', Arial, Helvetica, sans-serif",
