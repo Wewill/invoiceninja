@@ -44,6 +44,8 @@
                 {!! Former::text('website') !!}
                 {!! Former::text('work_email') !!}
                 {!! Former::text('work_phone') !!}
+                {!! Former::text('work_fax') !!}
+                {!! Former::text('work_mobile') !!}
                 {!! Former::file('logo')->max(2, 'MB')->accept('image')->inlineHelp(trans('texts.logo_help')) !!}
 
 

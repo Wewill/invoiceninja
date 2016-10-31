@@ -297,7 +297,6 @@ class AccountController extends BaseController
                 'title' => trans("texts.{$section}"),
                 'section' => $section,
             ];
-
             return View::make("accounts.{$section}", $data);
         }
     }
