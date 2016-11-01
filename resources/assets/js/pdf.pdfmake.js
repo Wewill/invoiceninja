@@ -847,7 +847,7 @@ NINJA.accountDetails = function(invoice) {
 
             'account.phone',
             'account.fax',
-            'account.mobilephone',
+            'account.mobile',
 
             'account.email',
             'account.website',
@@ -1162,8 +1162,8 @@ NINJA.renderClientOrAccountField = function(invoice, field) {
         return {text:'***M ***' + account.work_email, style: ['email']}; // MAJ WIL
     } else if (field == 'account.phone') {
         return {text:'***T ***' + account.work_phone, style: ['phone']}; // MAJ WIL
-    } else if (field == 'account.mobilephone') {
-        return {text:'***P ***' + account.work_mobilephone, style: ['mobilephone']}; // MAJ WIL
+    } else if (field == 'account.mobile') {
+        return {text:'***P ***' + account.work_mobile, style: ['mobilephone']}; // MAJ WIL
     } else if (field == 'account.fax') {
         return {text:'***F ***' + account.work_fax, style: ['fax']}; // MAJ WIL
     } else if (field == 'account.address1') {
