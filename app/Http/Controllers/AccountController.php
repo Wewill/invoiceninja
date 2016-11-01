@@ -947,6 +947,7 @@ class AccountController extends BaseController
                 $account->invoice_footer = Input::get('invoice_footer');
                 $account->quote_terms = Input::get('quote_terms');
                 $account->auto_convert_quote = Input::get('auto_convert_quote');
+                $account->auto_convert_quote_to_partial = Input::get('auto_convert_quote_to_partial');
                 $account->recurring_invoice_number_prefix = Input::get('recurring_invoice_number_prefix');
 
                 if (Input::has('recurring_hour')) {

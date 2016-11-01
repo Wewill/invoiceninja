@@ -222,6 +222,11 @@
                     ->text(trans('texts.enable'))
                     ->blockHelp(trans('texts.auto_convert_quote_help')) !!}
         </div>
+	    <div class="panel-body form-padding-right">
+		    {!! Former::checkbox('auto_convert_quote_to_partial')
+					->text(trans('texts.enable'))
+					->blockHelp(trans('texts.auto_convert_quote_to_partial_help')) !!}
+	    </div>
     </div>
 
     <div class="panel panel-default">
