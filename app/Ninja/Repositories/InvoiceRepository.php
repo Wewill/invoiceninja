@@ -285,18 +285,30 @@ class InvoiceRepository extends BaseRepository
 
         $invoice->fill($data);
 
-        if ((isset($data['set_default_terms']) && $data['set_default_terms'])
-            || (isset($data['set_default_footer']) && $data['set_default_footer'])) {
-            if (isset($data['set_default_terms']) && $data['set_default_terms']) {
-                $account->{"{$invoice->getEntityType()}_terms"} = trim($data['terms']);
-            }
-            if (isset($data['set_default_footer']) && $data['set_default_footer']) {
-                $account->invoice_footer = trim($data['invoice_footer']);
-            }
-            $account->save();
+
+        if (!empty($data['set_default_terms'])) {
+            $account->{"{$invoice->getEntityType()}_terms"} = trim($data['terms']);
         }
 
-        if (isset($data['invoice_number']) && !$invoice->is_recurring) {
+        if (!empty($data['set_default_footer'])) {
+            $account->invoice_footer = trim($data['invoice_footer']);
+        }
+
+        if (!empty($data['set_default_invoice_needs'])) {
+	        $account->invoice_needs = trim($data['invoice_needs']);
+        }
+
+	    if (!empty($data['set_default_invoice_delays'])) {
+		    $account->invoice_delays = trim($data['invoice_delays']);
+	    }
+
+	    if (!empty($data['set_default_invoice_specifications'])) {
+		    $account->invoice_specifications = trim($data['invoice_specifications']);
+	    }
+
+	    $account->save();
+
+	    if (isset($data['invoice_number']) && !$invoice->is_recurring) {
             $invoice->invoice_number = trim($data['invoice_number']);
         }
 
@@ -359,8 +371,17 @@ class InvoiceRepository extends BaseRepository
             $invoice->terms = '';
         }
 
-        $invoice->invoice_footer = (isset($data['invoice_footer']) && trim($data['invoice_footer'])) ? trim($data['invoice_footer']) : (!$publicId && $account->invoice_footer ? $account->invoice_footer : '');
-        $invoice->public_notes = isset($data['public_notes']) ? trim($data['public_notes']) : null;
+        $invoice->invoice_footer = (!empty($data['invoice_footer'])) ? trim($data['invoice_footer']) :
+	        ((!$publicId && $account->invoice_footer) ? $account->invoice_footer : '');
+	    $invoice->invoice_needs = (!empty($data['invoice_needs'])) ? trim($data['invoice_needs']) :
+		    ((!$publicId && $account->invoice_needs) ? $account->invoice_needs : '');
+	    $invoice->invoice_delays = (!empty($data['invoice_delays'])) ? trim($data['invoice_delays']) :
+		    ((!$publicId && $account->invoice_delays) ? $account->invoice_delays : '');
+	    $invoice->invoice_specifications = (!empty($data['invoice_specifications'])) ?
+		    trim($data['invoice_specifications']) :
+		    ((!$publicId && $account->invoice_specifications) ? $account->invoice_specifications : '');
+
+        $invoice->public_notes = !empty($data['public_notes']) ? trim($data['public_notes']) : null;
 
         // process date variables if not recurring
         if(!$invoice->is_recurring) {
@@ -385,8 +406,7 @@ class InvoiceRepository extends BaseRepository
         $itemTax = 0;
 
         foreach ($data['invoice_items'] as $item) {
-            $item = (array) $item;
-            if (!$item['cost'] && !$item['product_key'] && !$item['notes']) {
+            if (empty($item['cost']) || empty($item['qty'])) {
                 continue;
             }
 
@@ -478,6 +498,7 @@ class InvoiceRepository extends BaseRepository
         }
 
         $invoice->amount = $total;
+
         $invoice->save();
 
         if ($publicId) {
@@ -517,10 +538,17 @@ class InvoiceRepository extends BaseRepository
         }
 
         foreach ($data['invoice_items'] as $item) {
-            $item = (array) $item;
-            if (empty($item['cost']) && empty($item['product_key']) && empty($item['notes']) && empty($item['custom_value1']) && empty($item['custom_value2'])) {
+            if (empty($item['cost']) || empty($item['product_key']) || empty($item['qty'])) {
                 continue;
             }
+
+            $item_exists = InvoiceItem::where([
+            	'product_key' => $item['product_key'],
+	            'qty' => $item['qty'],
+	            'cost' => $item['cost']
+            ])->exists();
+
+	        if ($item_exists) continue;
 
             $task = false;
             if (isset($item['task_public_id']) && $item['task_public_id']) {

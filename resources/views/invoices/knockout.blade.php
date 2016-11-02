@@ -169,10 +169,27 @@ function InvoiceModel(data) {
     self.default_terms = ko.observable(account.{{ $entityType }}_terms);
     self.terms_placeholder = ko.observable({{ !$invoice->id && $account->{"{$entityType}_terms"} ? "account.{$entityType}_terms" : false}});
     self.set_default_terms = ko.observable(false);
-    self.invoice_footer = ko.observable('');
+
+	self.invoice_footer = ko.observable('');
     self.default_footer = ko.observable(account.invoice_footer);
     self.footer_placeholder = ko.observable({{ !$invoice->id && $account->invoice_footer ? 'account.invoice_footer' : false}});
     self.set_default_footer = ko.observable(false);
+
+	self.invoice_needs = ko.observable('');
+	self.default_invoice_needs = ko.observable(account.invoice_needs);
+	self.invoice_needs_placeholder = ko.observable({{ !$invoice->id && $account->invoice_needs ? 'account.invoice_needs' : false}});
+	self.set_default_invoice_needs = ko.observable(false);
+
+	self.invoice_delays = ko.observable('');
+	self.default_invoice_delays = ko.observable(account.invoice_delays);
+	self.invoice_delays_placeholder = ko.observable({{ !$invoice->id && $account->invoice_delays ? 'account.invoice_delays' : false}});
+	self.set_default_invoice_delays = ko.observable(false);
+
+	self.invoice_specifications = ko.observable('');
+	self.default_invoice_specifications = ko.observable(account.invoice_specifications);
+	self.invoice_specifications_placeholder = ko.observable({{ !$invoice->id && $account->invoice_specifications ? 'account.invoice_specifications' : false}});
+	self.set_default_invoice_specifications = ko.observable(false);
+
     self.public_notes = ko.observable('');
     self.po_number = ko.observable('');
     self.invoice_date = ko.observable('');
@@ -326,6 +343,39 @@ function InvoiceModel(data) {
         },
         owner: this
     });
+
+	self.wrapped_invoice_needs = ko.computed({
+		read: function() {
+			return this.invoice_needs();
+		},
+		write: function(value) {
+			value = wordWrapText(value, 600);
+			self.invoice_needs(value);
+		},
+		owner: this
+	});
+
+	self.wrapped_invoice_delays = ko.computed({
+		read: function() {
+			return this.invoice_delays();
+		},
+		write: function(value) {
+			value = wordWrapText(value, 600);
+			self.invoice_delays(value);
+		},
+		owner: this
+	});
+
+	self.wrapped_invoice_specifications = ko.computed({
+		read: function() {
+			return this.invoice_specifications();
+		},
+		write: function(value) {
+			value = wordWrapText(value, 600);
+			self.invoice_specifications(value);
+		},
+		owner: this
+	});
 
     self.removeItem = function(item) {
         self.invoice_items.remove(item);

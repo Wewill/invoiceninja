@@ -377,7 +377,7 @@
 											<input name="set_default_invoice_needs" type="checkbox" style="width: 24px" data-bind="checked: set_default_invoice_needs"/>'.trans('texts.save_as_default_invoice_needs').'
 										</label>
 										<div class="pull-right" data-bind="visible: showResetFooter()">
-											<a href="#" onclick="return resetFooter()" title="'. trans('texts.reset_invoice_needs_help') .'">' . trans("texts.reset_invoice_needs") . '</a>
+											<a href="#" onclick="return resetNeeds()" title="'. trans('texts.reset_invoice_needs_help') .'">' . trans("texts.reset_invoice_needs") . '</a>
 										</div>
 									</div>') !!}
 		                    {!! Former::textarea('invoice_delays')->data_bind("value:wrapped_invoice_delays, placeholder: invoice_delays_placeholder, valueUpdate: 'afterkeydown'")
@@ -387,7 +387,7 @@
 										   <input name="set_default_invoice_delays" type="checkbox" style="width: 24px" data-bind="checked: set_default_invoice_delays"/>'.trans('texts.save_as_default_invoice_delays').'
 									   </label>
 									   <div class="pull-right" data-bind="visible: showResetFooter()">
-										   <a href="#" onclick="return resetFooter()" title="'. trans('texts.reset_invoice_delays_help') .'">' . trans("texts.reset_invoice_delays") . '</a>
+										   <a href="#" onclick="return resetDelays()" title="'. trans('texts.reset_invoice_delays_help') .'">' . trans("texts.reset_invoice_delays") . '</a>
 									   </div>
 								   </div>') !!}
 	                    </div>
@@ -399,7 +399,7 @@
 											<input name="set_default_invoice_specifications" type="checkbox" style="width: 24px" data-bind="checked: set_default_invoice_specifications"/>'.trans('texts.save_as_default_invoice_specifications').'
 										</label>
 										<div class="pull-right" data-bind="visible: showResetFooter()">
-											<a href="#" onclick="return resetFooter()" title="'. trans('texts.reset_invoice_specifications_help') .'">' . trans("texts.reset_invoice_specifications") . '</a>
+											<a href="#" onclick="return resetSpecifications()" title="'. trans('texts.reset_invoice_specifications_help') .'">' . trans("texts.reset_invoice_specifications") . '</a>
 										</div>
 									</div>') !!}
 	                    </div>
@@ -1232,6 +1232,35 @@
 
         return false;
     }
+
+    function resetDelays() {
+	    sweetConfirm(function() {
+		    model.invoice().invoice_delays(model.invoice().default_delays());
+		    refreshPDF();
+	    });
+
+	    return false;
+    }
+
+    function resetNeeds() {
+	    sweetConfirm(function() {
+		    model.invoice().invoice_needs(model.invoice().default_needs());
+		    refreshPDF();
+	    });
+
+	    return false;
+    }
+
+    function resetSpecifications() {
+	    sweetConfirm(function() {
+		    model.invoice().invoice_specifications(model.invoice().default_specifications());
+		    refreshPDF();
+	    });
+
+	    return false;
+    }
+
+
 
 	function onDownloadClick() {
 		trackEvent('/activity', '/download_pdf');
