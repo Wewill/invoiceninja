@@ -328,6 +328,8 @@
                         <li role="presentation" class="active"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">{{ trans('texts.note_to_client') }}</a></li>
                         <li role="presentation"><a href="#terms" aria-controls="terms" role="tab" data-toggle="tab">{{ trans("texts.terms") }}</a></li>
                         <li role="presentation"><a href="#footer" aria-controls="footer" role="tab" data-toggle="tab">{{ trans("texts.footer") }}</a></li>
+                        <li role="presentation"><a href="#invoice_needs_delays" aria-controls="invoice_needs_delays" role="tab" data-toggle="tab">{{ trans("texts.invoice_needs_delays") }}</a></li>
+                        <li role="presentation"><a href="#invoice_specifications" aria-controls="invoice_specifications" role="tab" data-toggle="tab">{{ trans("texts.invoice_specifications") }}</a></li>
                         @if ($account->hasFeature(FEATURE_DOCUMENTS))
                             <li role="presentation"><a href="#attached-documents" aria-controls="attached-documents" role="tab" data-toggle="tab">
                                 {{ trans("texts.invoice_documents") }}
@@ -367,6 +369,40 @@
                                         </div>
                                     </div>') !!}
                         </div>
+	                    <div role="tabpanel" class="tab-pane" id="invoice_needs_delays">
+		                    {!! Former::textarea('invoice_needs')->data_bind("value:wrapped_invoice_needs, placeholder: invoice_needs_placeholder, valueUpdate: 'afterkeydown'")
+							->label(false)->style('resize: none; width: 500px')->rows(4)
+							->help('<div class="checkbox">
+										<label>
+											<input name="set_default_invoice_needs" type="checkbox" style="width: 24px" data-bind="checked: set_default_invoice_needs"/>'.trans('texts.save_as_default_invoice_needs').'
+										</label>
+										<div class="pull-right" data-bind="visible: showResetFooter()">
+											<a href="#" onclick="return resetFooter()" title="'. trans('texts.reset_invoice_needs_help') .'">' . trans("texts.reset_invoice_needs") . '</a>
+										</div>
+									</div>') !!}
+		                    {!! Former::textarea('invoice_delays')->data_bind("value:wrapped_invoice_delays, placeholder: invoice_delays_placeholder, valueUpdate: 'afterkeydown'")
+						   ->label(false)->style('resize: none; width: 500px')->rows(4)
+						   ->help('<div class="checkbox">
+									   <label>
+										   <input name="set_default_invoice_delays" type="checkbox" style="width: 24px" data-bind="checked: set_default_invoice_delays"/>'.trans('texts.save_as_default_invoice_delays').'
+									   </label>
+									   <div class="pull-right" data-bind="visible: showResetFooter()">
+										   <a href="#" onclick="return resetFooter()" title="'. trans('texts.reset_invoice_delays_help') .'">' . trans("texts.reset_invoice_delays") . '</a>
+									   </div>
+								   </div>') !!}
+	                    </div>
+	                    <div role="tabpanel" class="tab-pane" id="invoice_specifications">
+		                    {!! Former::textarea('invoice_specifications')->data_bind("value:wrapped_invoice_specifications, placeholder: invoice_specifications_placeholder, valueUpdate: 'afterkeydown'")
+							->label(false)->style('resize: none; width: 500px')->rows(4)
+							->help('<div class="checkbox">
+										<label>
+											<input name="set_default_invoice_specifications" type="checkbox" style="width: 24px" data-bind="checked: set_default_invoice_specifications"/>'.trans('texts.save_as_default_invoice_specifications').'
+										</label>
+										<div class="pull-right" data-bind="visible: showResetFooter()">
+											<a href="#" onclick="return resetFooter()" title="'. trans('texts.reset_invoice_specifications_help') .'">' . trans("texts.reset_invoice_specifications") . '</a>
+										</div>
+									</div>') !!}
+	                    </div>
                         @if ($account->hasFeature(FEATURE_DOCUMENTS))
                         <div role="tabpanel" class="tab-pane" id="attached-documents" style="position:relative;z-index:9">
                             <div id="document-upload">
