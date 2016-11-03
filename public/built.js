@@ -63240,7 +63240,6 @@ NINJA.specificationsCustom = function(invoice)
     var data = [];
 
     if (invoice.invoice_specifications) {
-        console.log('Specs: '+invoice.invoice_specifications);
         data.push({margin: [ 0, 5, 0, 5 ], style: ['tableCustom'], table:{headerRows: 1, keepWithHeaderRows: 1, dontBreakRows: true, widths:['*'],body: [ [{text:'Cahier des charges / Brief client', style: ['specificationsLabel', 'tableCustomHeader']}],[{text:invoice.invoice_specifications}] ]}, layout: { hLineWidth: '$none', vLineWidth: '$none', paddingLeft: '$amount:8', paddingRight: '$amount:8', paddingTop: '$amount:2', paddingBottom: '$amount:2' }});
     }
  
@@ -63253,8 +63252,6 @@ NINJA.needsAndDelayCustom = function(invoice)
     var data = [];
 
     if (invoice.invoice_needs && invoice.invoice_delays) {
-      console.log('Delays: '+invoice.invoice_delays);
-      console.log('Needs: '+invoice.invoice_needs);
         data.push({margin: [ 0, 5, 0, 5 ], style: ['tableCustom'], table:{headerRows: 1, keepWithHeaderRows: 1, dontBreakRows: true, widths:['*'],body: [ [{text:'Besoins & délais', style: ['needsAndDelayLabel', 'tableCustomHeader']}],[{text:invoice.invoice_needs}],[{text:invoice.invoice_delays}] ]}, layout: { hLineWidth: '$none', vLineWidth: '$none', paddingLeft: '$amount:8', paddingRight: '$amount:8', paddingTop: '$amount:2', paddingBottom: '$amount:2' }});
     }
  
