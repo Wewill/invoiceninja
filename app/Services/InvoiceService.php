@@ -111,11 +111,12 @@ class InvoiceService extends BaseService
     /**
      * @param $quote
      * @param Invitation|null $invitation
+     * @param bool|int $partial
      * @return mixed
      */
-    public function convertQuote($quote)
+    public function convertQuote($quote, $partial = false)
     {
-        return $this->invoiceRepo->cloneInvoice($quote, $quote->id);
+        return $this->invoiceRepo->cloneInvoice($quote, $quote->id, $partial);
     }
 
     /**
@@ -132,7 +133,11 @@ class InvoiceService extends BaseService
         }
 
         if ($account->auto_convert_quote) {
-            $invoice = $this->convertQuote($quote);
+	        if ($account->auto_convert_quote_to_partial) {
+		        $invoice = $this->convertQuote($quote, $account->auto_convert_quote_to_partial);
+	        } else {
+		        $invoice = $this->convertQuote($quote);
+	        }
 
             foreach ($invoice->invitations as $invoiceInvitation) {
                 if ($invitation->contact_id == $invoiceInvitation->contact_id) {
@@ -140,7 +145,7 @@ class InvoiceService extends BaseService
                 }
             }
         } else {
-            $quote->markApproved();
+	        $quote->markApproved();
         }
 
         event(new QuoteInvitationWasApproved($quote, $invitation));

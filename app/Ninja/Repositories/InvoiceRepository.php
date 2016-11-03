@@ -621,9 +621,10 @@ class InvoiceRepository extends BaseRepository
     /**
      * @param Invoice $invoice
      * @param null $quotePublicId
+     * @param bool|int $partial
      * @return mixed
      */
-    public function cloneInvoice(Invoice $invoice, $quotePublicId = null)
+    public function cloneInvoice(Invoice $invoice, $quotePublicId = null, $partial = false)
     {
         $invoice->load('invitations', 'invoice_items');
         $account = $invoice->account;
@@ -675,7 +676,11 @@ class InvoiceRepository extends BaseRepository
           'partial',
           'custom_text_value1',
           'custom_text_value2', ] as $field) {
-            $clone->$field = $invoice->$field;
+	        if ($partial && $field == 'partial') {
+		        $clone->$field = $invoice->amount * 0.3;
+	        } else {
+		        $clone->$field = $invoice->$field;
+	        }
         }
 
         if ($quotePublicId) {
