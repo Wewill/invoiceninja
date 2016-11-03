@@ -322,9 +322,9 @@ NINJA.specificationsCustom = function(invoice)
 {
     var data = [];
 
-    //if (invoice.public_notes) {
-        data.push({margin: [ 0, 5, 0, 5 ], style: ['tableCustom'], table:{headerRows: 1, keepWithHeaderRows: 1, dontBreakRows: true, widths:['*'],body: [ [{text:'Cahier des charges / Brief client', style: ['specificationsLabel', 'tableCustomHeader']}],[{text:'>$invoiceSpecifications'}] ]}, layout: { hLineWidth: '$none', vLineWidth: '$none', paddingLeft: '$amount:8', paddingRight: '$amount:8', paddingTop: '$amount:2', paddingBottom: '$amount:2' }});
-    //}
+    if (invoice.invoice_specifications) {
+        data.push({margin: [ 0, 5, 0, 5 ], style: ['tableCustom'], table:{headerRows: 1, keepWithHeaderRows: 1, dontBreakRows: true, widths:['*'],body: [ [{text:'Cahier des charges / Brief client', style: ['specificationsLabel', 'tableCustomHeader']}],[{text:invoice.invoice_specifications}] ]}, layout: { hLineWidth: '$none', vLineWidth: '$none', paddingLeft: '$amount:8', paddingRight: '$amount:8', paddingTop: '$amount:2', paddingBottom: '$amount:2' }});
+    }
  
     return data;
 }
@@ -334,9 +334,9 @@ NINJA.needsAndDelayCustom = function(invoice)
 {
     var data = [];
 
-    //if (invoice.public_notes) {
-        data.push({margin: [ 0, 5, 0, 5 ], style: ['tableCustom'], table:{headerRows: 1, keepWithHeaderRows: 1, dontBreakRows: true, widths:['*'],body: [ [{text:'Besoins & délais', style: ['needsAndDelayLabel', 'tableCustomHeader']}],[{text:'>$invoiceNeeds'}],[{text:'>$invoiceDelay'}] ]}, layout: { hLineWidth: '$none', vLineWidth: '$none', paddingLeft: '$amount:8', paddingRight: '$amount:8', paddingTop: '$amount:2', paddingBottom: '$amount:2' }});
-    //}
+    if (invoice.invoice_needs && invoice.invoice_delays) {
+        data.push({margin: [ 0, 5, 0, 5 ], style: ['tableCustom'], table:{headerRows: 1, keepWithHeaderRows: 1, dontBreakRows: true, widths:['*'],body: [ [{text:'Besoins & délais', style: ['needsAndDelayLabel', 'tableCustomHeader']}],[{text:invoice.invoice_needs}],[{text:invoice.invoice_delays}] ]}, layout: { hLineWidth: '$none', vLineWidth: '$none', paddingLeft: '$amount:8', paddingRight: '$amount:8', paddingTop: '$amount:2', paddingBottom: '$amount:2' }});
+    }
  
     return data;
 }
