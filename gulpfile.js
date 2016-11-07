@@ -72,6 +72,7 @@ elixir(function(mix) {
     mix.scripts([
         'pdf_viewer.js',
         'compatibility.js',
+        'pdf-images.js',
         'pdfmake.js',
         'vfs.js'
     ], 'public/pdf.built.js');
