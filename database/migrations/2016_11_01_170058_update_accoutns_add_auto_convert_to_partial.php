@@ -14,7 +14,7 @@ class UpdateAccoutnsAddAutoConvertToPartial extends Migration
     public function up()
     {
 	    Schema::table('accounts', function(Blueprint $table){
-		    $table->boolean('auto_convert_quote_to_partial');
+		    $table->boolean('auto_convert_quote_to_partial')->default(0);
 	    });
     }
 

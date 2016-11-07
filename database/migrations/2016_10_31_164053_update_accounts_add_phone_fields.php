@@ -14,8 +14,8 @@ class UpdateAccountsAddPhoneFields extends Migration
     public function up()
     {
 	    Schema::table('accounts', function (Blueprint $table){
-		    $table->string('work_fax');
-		    $table->string('work_mobile');
+		    $table->string('work_fax')->nullable();
+		    $table->string('work_mobile')->nullable();
 	    });
     }
 

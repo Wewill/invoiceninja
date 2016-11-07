@@ -14,9 +14,9 @@ class UpdateAccountsAddInvoiceMessagesFields extends Migration
     public function up()
     {
 	    Schema::table('accounts', function (Blueprint $table){
-		   $table->text('invoice_needs');
-		   $table->text('invoice_delays');
-		   $table->text('invoice_specifications');
+		   $table->text('invoice_needs')->nullable();
+		   $table->text('invoice_delays')->nullable();
+		   $table->text('invoice_specifications')->nullable();
 	    });
     }
 
