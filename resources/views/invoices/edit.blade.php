@@ -1235,7 +1235,7 @@
 
     function resetDelays() {
 	    sweetConfirm(function() {
-		    model.invoice().invoice_delays(model.invoice().default_delays());
+		    model.invoice().invoice_delays(model.invoice().default_invoice_delays());
 		    refreshPDF();
 	    });
 
@@ -1244,7 +1244,7 @@
 
     function resetNeeds() {
 	    sweetConfirm(function() {
-		    model.invoice().invoice_needs(model.invoice().default_needs());
+		    model.invoice().invoice_needs(model.invoice().default_invoice_needs());
 		    refreshPDF();
 	    });
 
@@ -1253,7 +1253,7 @@
 
     function resetSpecifications() {
 	    sweetConfirm(function() {
-		    model.invoice().invoice_specifications(model.invoice().default_specifications());
+		    model.invoice().invoice_specifications(model.invoice().default_invoice_specifications());
 		    refreshPDF();
 	    });
 
