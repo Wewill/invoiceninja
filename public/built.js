@@ -63060,9 +63060,12 @@ function GetPdfMake(invoice, javascript, callback) {
     if(!dd.defaultStyle)dd.defaultStyle = {font:NINJA.bodyFont};
     else if(!dd.defaultStyle.font)dd.defaultStyle.font = NINJA.bodyFont;
 
+    dd.content.push({image: CGVimg, width: 635, height: 770, margin: [-60,-30], pageBreak: 'before'});
+    dd.content.push({image: AFFILIATEimg, width: 575, height: 770, margin: [-30,-30], pageBreak: 'before'});
+
     doc = pdfMake.createPdf(dd);
     doc.save = function(fileName) {
-        this.download(fileName);
+      this.download(fileName);
     };
 
     return doc;
