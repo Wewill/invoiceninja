@@ -321,6 +321,15 @@ class InvoiceRepository extends BaseRepository
         if (isset($data['partial'])) {
             $invoice->partial = round(Utils::parseFloat($data['partial']), 2);
         }
+	    if (isset($data['order_from'])) {
+		    $invoice->order_from = $data['order_from'];
+	    }
+	    if (isset($data['reference'])) {
+		    $invoice->reference = $data['reference'];
+	    }
+	    if (isset($data['title'])) {
+		    $invoice->title = $data['title'];
+	    }
         if (isset($data['invoice_date_sql'])) {
             $invoice->invoice_date = $data['invoice_date_sql'];
         } elseif (isset($data['invoice_date'])) {

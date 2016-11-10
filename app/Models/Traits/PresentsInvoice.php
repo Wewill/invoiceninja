@@ -198,6 +198,9 @@ trait PresentsInvoice
             'company_name',
             'website',
             'phone',
+	        'order_from',
+	        'reference',
+	        'title'
         ];
 
         foreach ($fields as $field) {

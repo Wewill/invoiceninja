@@ -624,7 +624,7 @@ NINJA.invoiceLinesCustom = function(invoice) {
    	for (var i = 1; i < colNumber; i++) {
 	   	grid[0].push({text: ' '});
    	}
-   	grid[1].push({text: '>$invoiceTitle', style: ['tableHeader', 'titleTableHeader'], colSpan: colNumber});
+   	grid[1].push({text: invoiceLabels.title, style: ['tableHeader', 'titleTableHeader'], colSpan: colNumber});
    	for (var i = 1; i < colNumber; i++) {
 	   	grid[1].push({text: ' '});
    	}
@@ -960,13 +960,12 @@ NINJA.renderInvoiceField = function(invoice, field) {
 // --- ADD WIL 
 NINJA.renderInvoiceFieldCustom = function(invoice, field) {
 
-    var account = invoice.account;
-
+  var account = invoice.account;
     if (field == 'invoice.invoice_number') {
-        return [
-            {text: (invoice.is_quote ? invoiceLabels.quote_number : invoiceLabels.invoice_number) + '' + invoice.invoice_number, style: ['invoiceNumberAndLabel'], colSpan: 2}, //colSpan
-            {text: ' '}
-        ];
+      return [
+        {text: (invoice.is_quote ? invoiceLabels.quote_number : invoiceLabels.invoice_number) + '' + invoice.invoice_number, style: ['invoiceNumberAndLabel'], colSpan: 2}, //colSpan
+        {text: ' '}
+      ];
     } else if (field == 'invoice.blank') {
         return [
             {text: ' ', style: ['tableBlank']},
@@ -1045,6 +1044,8 @@ NINJA.invoiceDetails = function(invoice) {
             'invoice.partial_due',
             'invoice.custom_text_value1',
             'invoice.custom_text_value2',
+            'invoice.order_from',
+            'invoice.reference',
         ];
     }
     var data = [];
@@ -1078,6 +1079,8 @@ NINJA.invoiceDetailsCustom = function(invoice) {
             'invoice.due_date',
             'invoice.balance_due',
             'invoice.partial_due',
+            'invoice.order_from',
+            'invoice.reference'
         ];
     //}
     var data = [];
