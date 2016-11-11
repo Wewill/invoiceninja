@@ -17,6 +17,7 @@ class AddCreditNotesTable extends Migration
             $table->increments('id');
             $table->integer('invoice_id')->unsigned();
 	        $table->foreign('invoice_id')->references('id')->on('invoices');
+	        $table->string('credit_note_number');
 	        $table->timestamps();
 	        $table->softDeletes();
         });

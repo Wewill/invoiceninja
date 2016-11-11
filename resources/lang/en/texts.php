@@ -35,6 +35,7 @@ $LANG = array(
     'due_date' => 'Due Date',
     'invoice_number' => 'Invoice Number',
     'invoice_number_short' => 'Invoice #',
+    'credit_note_number' => 'Credit Note Number',
     'po_number' => 'PO Number',
     'po_number_short' => 'PO #',
     'frequency_id' => 'How Often',

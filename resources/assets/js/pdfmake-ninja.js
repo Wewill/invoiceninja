@@ -518,7 +518,7 @@ NINJA.subtotals = function(invoice, hideBalance)
         data.push([{text: account.custom_invoice_label2, style: ['subtotalsLabel', 'custom2Label']}, {text: formatMoneyInvoice(invoice.custom_value2, invoice), style: ['subtotals', 'custom2']}]);
     }
 
-    var paid = (invoice.amount_paid === "undefined") ? invoice.amount - invoice.balance : invoice.amount_paid;
+    var paid = invoice.amount - invoice.balance;
     if (invoice.account.hide_paid_to_date != '1' || paid) {
         data.push([{text:invoiceLabels.paid_to_date, style: ['subtotalsLabel', 'paidToDateLabel']}, {text:formatMoneyInvoice(paid, invoice), style: ['subtotals', 'paidToDate']}]);
     }
@@ -621,11 +621,10 @@ NINJA.invoiceDetails = function(invoice) {
         ])
     }
 
-    console.log(invoice);
     data.push([
         {text: invoiceLabels.balance_due, style: ['invoiceDetailBalanceDueLabel']},
         {text: formatMoneyInvoice(invoice.total_amount, invoice), style: ['invoiceDetailBalanceDue']}
-    ])
+    ]);
 
     if (NINJA.parseFloat(invoice.partial)) {
         data.push([

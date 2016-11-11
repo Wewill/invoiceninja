@@ -35,6 +35,7 @@ $LANG = array(
     'due_date' => 'Date d\'échéance',
     'invoice_number' => 'NOTE DE CESSION DE DROITS D\'AUTEUR N°', //Numéro de facture
     'invoice_number_short' => 'Facture N°', //Facture #
+	'credit_note_number' => 'Avoir',
     'po_number' => 'Numéro du bon de commande',
     'po_number_short' => 'Bon de commande N°', //Bon de commande #
     'frequency_id' => 'Fréquence',

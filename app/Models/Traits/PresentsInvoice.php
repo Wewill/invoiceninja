@@ -200,7 +200,8 @@ trait PresentsInvoice
             'phone',
 	        'order_from',
 	        'reference',
-	        'title'
+	        'title',
+	        'credit_note_number'
         ];
 
         foreach ($fields as $field) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,9 +16,4 @@ class CreditNote extends Model
 	protected $fillable = ['invoice_id'];
 	protected $protected = ['created_at', 'updated_at'];
 	protected $dates = ['deleted_at'];
-
-    public function invoice()
-    {
-	    return $this->hasOne('App\Models\Invoice', 'invoice_id');
-    }
 }

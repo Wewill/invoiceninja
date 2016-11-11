@@ -919,7 +919,7 @@
 
                 // move the blank invoice line item to the end
                 var blank = model.invoice().invoice_items.pop();
-                var expenses = {!! $expenses !!}
+                var expenses = {!! $expenses !!};
 
                 for (var i=0; i<expenses.length; i++) {
                     var expense = expenses[i];
@@ -1036,7 +1036,7 @@
 				model.loadClient(model.clientBackup);
 				refreshPDF(true);
 			}
-		})
+		});
 
 		$('#relatedActions > button:first').click(function() {
 			onPaymentClick();
@@ -1050,7 +1050,7 @@
 			refreshPDF(true);
 		@endif
 
-		var client = model.invoice().client();
+		client = model.invoice().client();
 		setComboboxValue($('.client_select'),
 			client.public_id(),
 			client.name.display());
@@ -1160,7 +1160,7 @@
             refreshPDF(true);
 		});
 
-        var selectorStr = '.invoice-table select';
+        selectorStr = '.invoice-table select';
         $(selectorStr).off('blur').on('blur', function(event) {
             onItemChange();
             refreshPDF(true);
@@ -1217,17 +1217,10 @@
 
 	function createCreditNoteModel() {
 		var model = ko.toJS(window.model);
+		if(!model)return;
 		var invoice = model.invoice;
-
-
-		invoice.amount_paid *= (invoice.amount - invoice.balance) * -1;
-		invoice.amount *= -1;
-		invoice.partial *= -1;
-		invoice.balance *= -1;
-
-		if (invoice.total_amount !== 'undefined')
-			invoice.total_amount *= -1;
-
+		invoice.save_deleted = true;
+		invoice.credit_note_number = {{ !is_null($invoice->credit_note) ? $invoice->credit_note->credit_note_number : 0 }};
 		return generateModel(invoice);
 	}
 
