@@ -64133,7 +64133,7 @@ NINJA.invoiceDetails = function (invoice) {
   }
 
   if (invoice.save_deleted) {
-    fields.splice(1, 0, 'invoice.credit_note_number');
+    fields.splice(0, 0, 'invoice.credit_note_number');
   }
 
   var data = [];
