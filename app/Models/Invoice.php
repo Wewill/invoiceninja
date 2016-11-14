@@ -1064,8 +1064,6 @@ class Invoice extends EntityModel implements BalanceAffecting
             default:
                 return false;
         }
-
-        return false;
     }
 
     /**

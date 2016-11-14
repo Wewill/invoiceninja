@@ -190,6 +190,21 @@ function InvoiceModel(data) {
 	self.invoice_specifications_placeholder = ko.observable({{ !$invoice->id && $account->invoice_specifications ? 'account.invoice_specifications' : false}});
 	self.set_default_invoice_specifications = ko.observable(false);
 
+	self.reference = ko.observable('');
+	self.default_reference = ko.observable(self.reference);
+	self.reference_placeholder = ko.observable({{ $invoice->reference ? 'self.reference' : false }});
+	self.set_default_reference = ko.observable(false);
+
+	self.order_from = ko.observable('');
+	self.default_order_from = ko.observable(self.order_from);
+	self.order_from_placeholder = ko.observable({{ $invoice->order_from ? 'self.order_from' : false }});
+	self.set_default_order_from = ko.observable(false);
+
+	self.title = ko.observable('');
+	self.default_title = ko.observable(self.title);
+	self.title_placeholder = ko.observable({{ $invoice->title ? 'self.title' : false }});
+	self.set_default_title = ko.observable(false);
+
     self.public_notes = ko.observable('');
     self.po_number = ko.observable('');
     self.invoice_date = ko.observable('');
