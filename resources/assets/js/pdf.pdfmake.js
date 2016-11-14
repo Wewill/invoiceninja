@@ -624,7 +624,7 @@ NINJA.invoiceLinesCustom = function(invoice) {
    	for (var i = 1; i < colNumber; i++) {
 	   	grid[0].push({text: ' '});
    	}
-   	grid[1].push({text: invoiceLabels.title, style: ['tableHeader', 'titleTableHeader'], colSpan: colNumber});
+   	grid[1].push({text: invoice.title, style: ['tableHeader', 'titleTableHeader'], colSpan: colNumber});
    	for (var i = 1; i < colNumber; i++) {
 	   	grid[1].push({text: ' '});
    	}
@@ -954,6 +954,16 @@ NINJA.renderInvoiceField = function(invoice, field) {
         } else {
             return false;
         }
+    } else if (field == 'invoice.order_from') {
+      return [
+        {text: invoiceLabels.order_from},
+        {text: invoice.order_from}
+      ];
+    } else if (field == 'invoice.reference') {
+      return [
+        {text: invoiceLabels.reference},
+        {text: invoice.reference}
+      ];
     }
 };
 
@@ -1025,6 +1035,16 @@ NINJA.renderInvoiceFieldCustom = function(invoice, field) {
         } else {
             return false;
         }
+    } else if (field == 'invoice.order_from') {
+      return [
+        {text: invoiceLabels.order_from},
+        {text:invoice.order_from}
+      ];
+    } else if (field == 'invoice.reference') {
+      return [
+        {text: invoiceLabels.reference},
+        {text: invoice.reference}
+      ];
     }
 };
 // --- END ADD WIL 
