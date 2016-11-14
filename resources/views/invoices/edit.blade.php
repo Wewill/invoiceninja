@@ -140,9 +140,12 @@
 
                 {!! Former::text('partial')->data_bind("value: partial, valueUpdate: 'afterkeydown'")->onchange('onPartialChange()')
                             ->rel('tooltip')->data_toggle('tooltip')->data_placement('bottom')->title(trans('texts.partial_value')) !!}
-				{{--ORDER_FROM_HERE--}}
+
+				<div style="margin-top:35px">
 				{!! Former::text('order_from')->data_bind("value: order_from, valueUpdate: 'afterkeydown'")
-							->rel('tooltip')->data_toggle('tooltip')->data_placement('bottom')->title(trans('texts.order_from')) !!}
+							->rel('tooltip')->data_toggle('tooltip')->data_placement('bottom')
+							->title(trans('texts.order_from')) !!}
+				</div>
 			</div>
             @if ($entityType == ENTITY_INVOICE)
 			<div data-bind="visible: is_recurring" style="display: none">
@@ -231,7 +234,6 @@
             </div>
             @endif
 
-			{{--REFERENCE_HERE--}}
 			{!! Former::text('reference')->data_bind("value: reference, valueUpdate: 'afterkeydown'")
 						->rel('tooltip')->data_toggle('tooltip')->data_placement('bottom')->title(trans('texts.reference')) !!}
 		</div>
@@ -239,7 +241,6 @@
 
     <div class="row">
 	    <div class="col-md-12">
-		    {{--TITLE_HERE--}}
 		    {!! Former::text('title')->data_bind("value: title, valueUpdate: 'afterkeydown'")
 		        ->rel('tooltip')->data_toggle('tooltip')->data_placement('bottom')->title(trans('texts.title')) !!}
 	    </div>
