@@ -589,6 +589,12 @@
                     ->appendIcon(Icon::create('download-alt')) !!}
         @endif
 
+		@if( $invoice->is_deleted && !$invoice->is_quote)
+			{!! Button::primary(trans('texts.download_credit_note_pdf'))
+				   ->withAttributes(['onclick' => 'onDownloadCreditNoteClick()', 'id' => 'downloadCreditNotePdfButton'])
+				   ->appendIcon(Icon::create('download-alt')) !!}
+		@endif
+
         @if ($invoice->isClientTrashed())
             <!-- do nothing -->
         @elseif ($invoice->trashed())
@@ -914,7 +920,7 @@
 
                 // move the blank invoice line item to the end
                 var blank = model.invoice().invoice_items.pop();
-                var expenses = {!! $expenses !!}
+                var expenses = {!! $expenses !!};
 
                 for (var i=0; i<expenses.length; i++) {
                     var expense = expenses[i];
@@ -1031,7 +1037,7 @@
 				model.loadClient(model.clientBackup);
 				refreshPDF(true);
 			}
-		})
+		});
 
 		$('#relatedActions > button:first').click(function() {
 			onPaymentClick();
@@ -1045,7 +1051,7 @@
 			refreshPDF(true);
 		@endif
 
-		var client = model.invoice().client();
+		client = model.invoice().client();
 		setComboboxValue($('.client_select'),
 			client.public_id(),
 			client.name.display());
@@ -1155,7 +1161,7 @@
             refreshPDF(true);
 		});
 
-        var selectorStr = '.invoice-table select';
+        selectorStr = '.invoice-table select';
         $(selectorStr).off('blur').on('blur', function(event) {
             onItemChange();
             refreshPDF(true);
@@ -1166,45 +1172,57 @@
         });
 	}
 
-	function createInvoiceModel() {
-        var model = ko.toJS(window.model);
-        if(!model)return;
-		var invoice = model.invoice;
+	function generateModel(invoice) {
 		invoice.features = {
-            customize_invoice_design:{{ Auth::user()->hasFeature(FEATURE_CUSTOMIZE_INVOICE_DESIGN) ? 'true' : 'false' }},
-            remove_created_by:{{ Auth::user()->hasFeature(FEATURE_REMOVE_CREATED_BY) ? 'true' : 'false' }},
-            invoice_settings:{{ Auth::user()->hasFeature(FEATURE_INVOICE_SETTINGS) ? 'true' : 'false' }}
-        };
+			customize_invoice_design:{{ Auth::user()->hasFeature(FEATURE_CUSTOMIZE_INVOICE_DESIGN) ? 'true' : 'false' }},
+			remove_created_by:{{ Auth::user()->hasFeature(FEATURE_REMOVE_CREATED_BY) ? 'true' : 'false' }},
+			invoice_settings:{{ Auth::user()->hasFeature(FEATURE_INVOICE_SETTINGS) ? 'true' : 'false' }}
+		};
 		invoice.is_quote = {{ $entityType == ENTITY_QUOTE ? 'true' : 'false' }};
 		invoice.contact = _.findWhere(invoice.client.contacts, {send_invoice: true});
 
-        if (invoice.is_recurring) {
-            invoice.invoice_number = "{{ trans('texts.assigned_when_sent') }}";
-            if (invoice.start_date) {
-                invoice.invoice_date = invoice.start_date;
-            }
-        }
+		if (invoice.is_recurring) {
+			invoice.invoice_number = "{{ trans('texts.assigned_when_sent') }}";
+			if (invoice.start_date) {
+				invoice.invoice_date = invoice.start_date;
+			}
+		}
 
-        @if (!$invoice->id)
-            if (!invoice.terms) {
-                invoice.terms = account['{{ $entityType }}_terms'];
-            }
-            if (!invoice.invoice_footer) {
-                invoice.invoice_footer = account['invoice_footer'];
-            }
-        @endif
-
-		@if ($account->hasLogo())
-			invoice.image = "{{ Form::image_data($account->getLogoRaw(), true) }}";
-			invoice.imageWidth = {{ $account->getLogoWidth() }};
-			invoice.imageHeight = {{ $account->getLogoHeight() }};
+		@if (!$invoice->id)
+		if (!invoice.terms) {
+			invoice.terms = account['{{ $entityType }}_terms'];
+		}
+		if (!invoice.invoice_footer) {
+			invoice.invoice_footer = account['invoice_footer'];
+		}
 		@endif
 
-        //invoiceLabels.item = invoice.has_tasks ? invoiceLabels.date : invoiceLabels.item_orig;
-        invoiceLabels.quantity = invoice.has_tasks ? invoiceLabels.hours : invoiceLabels.quantity_orig;
-        invoiceLabels.unit_cost = invoice.has_tasks ? invoiceLabels.rate : invoiceLabels.unit_cost_orig;
+			@if ($account->hasLogo())
+			invoice.image = "{{ Form::image_data($account->getLogoRaw(), true) }}";
+		invoice.imageWidth = {{ $account->getLogoWidth() }};
+		invoice.imageHeight = {{ $account->getLogoHeight() }};
+		@endif
 
-        return invoice;
+		//invoiceLabels.item = invoice.has_tasks ? invoiceLabels.date : invoiceLabels.item_orig;
+		invoiceLabels.quantity = invoice.has_tasks ? invoiceLabels.hours : invoiceLabels.quantity_orig;
+		invoiceLabels.unit_cost = invoice.has_tasks ? invoiceLabels.rate : invoiceLabels.unit_cost_orig;
+
+		return invoice;
+	}
+
+	function createInvoiceModel() {
+        var model = ko.toJS(window.model);
+        if(!model)return;
+		return generateModel(model.invoice);
+	}
+
+	function createCreditNoteModel() {
+		var model = ko.toJS(window.model);
+		if(!model)return;
+		var invoice = model.invoice;
+		invoice.save_deleted = true;
+		invoice.credit_note_number = '{{ !is_null($invoice->credit_note) ? $invoice->credit_note->credit_note_number : '0000' }}';
+		return generateModel(invoice);
 	}
 
     window.generatedPDF = false;
@@ -1288,6 +1306,21 @@
 		var doc = generatePDF(invoice, design, true);
         var type = invoice.is_quote ? '{{ trans('texts.'.ENTITY_QUOTE) }}' : '{{ trans('texts.'.ENTITY_INVOICE) }}';
 		doc.save(type +'-' + $('#invoice_number').val() + '.pdf');
+	}
+
+	function onDownloadCreditNoteClick() {
+		var credit_note = createCreditNoteModel();
+		if (!credit_note.is_quote) {
+			var design  = getDesignJavascript();
+			if (!design) return;
+			var doc = generatePDF(credit_note, design, true);
+			var type = '{{ trans('texts.credit_note') }}';
+			doc.save(
+				type + '-'
+				+ '{{ !is_null($invoice->credit_note) ? $invoice->credit_note->credit_note_number : '0000' }}'
+				+ '.pdf'
+			);
+		}
 	}
 
 	function onEmailClick() {
