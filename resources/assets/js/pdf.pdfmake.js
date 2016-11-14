@@ -936,7 +936,10 @@ NINJA.subtotals = function (invoice, hideBalance) {
   data.push([{
     text: invoiceLabels.total,
     style: ['totalsLabel', 'totalLabel']
-  }, {text: formatMoneyInvoice(invoice.amount, invoice), style: ['totals', 'total']}]);
+  }, {
+    text: formatMoneyInvoice((!!invoice.save_deleted) ? invoice.amount * -1 : invoice.amount, invoice),
+    style: ['totals', 'total']
+  }]);
 
   var paid = invoice.amount - invoice.balance;
   if (invoice.account.hide_paid_to_date != '1' || paid) {
