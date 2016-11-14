@@ -27,7 +27,7 @@ class BaseRepository
      * @param $type
      * @return string
      */
-    private function getEventClass($entity, $type)
+    protected function getEventClass($entity, $type)
     {
         return 'App\Events\\' . ucfirst($entity->getEntityType()) . 'Was' . $type;
     }

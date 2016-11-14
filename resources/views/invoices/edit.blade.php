@@ -1220,7 +1220,7 @@
 		if(!model)return;
 		var invoice = model.invoice;
 		invoice.save_deleted = true;
-		invoice.credit_note_number = {{ !is_null($invoice->credit_note) ? $invoice->credit_note->credit_note_number : 0 }};
+		invoice.credit_note_number = '{{ !is_null($invoice->credit_note) ? $invoice->credit_note->credit_note_number : '0000' }}';
 		return generateModel(invoice);
 	}
 
@@ -1313,8 +1313,12 @@
 			var design  = getDesignJavascript();
 			if (!design) return;
 			var doc = generatePDF(credit_note, design, true);
-			var type = '{{ trans('texts.'.ENTITY_INVOICE) }}';
-			doc.save(type +'-' + $('#invoice_number').val() + '.pdf');
+			var type = '{{ trans('texts.credit_note') }}';
+			doc.save(
+				type + '-'
+				+ '{{ !is_null($invoice->credit_note) ? $invoice->credit_note->credit_note_number : '0000' }}'
+				+ '.pdf'
+			);
 		}
 	}
 

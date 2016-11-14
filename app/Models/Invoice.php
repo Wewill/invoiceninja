@@ -295,9 +295,12 @@ class Invoice extends EntityModel implements BalanceAffecting
         return $this->belongsTo('App\Models\InvoiceDesign');
     }
 
+	/**
+	 * @return mixed
+	 */
     public function credit_note()
     {
-	    return $this->belongsTo('App\Models\CreditNote');
+	    return $this->belongsTo('App\Models\CreditNote', 'id', 'invoice_id');
     }
 
     /**

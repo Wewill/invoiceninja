@@ -13,7 +13,7 @@ class CreditNote extends Model
 
 	protected $table = 'credit_notes';
 
-	protected $fillable = ['invoice_id'];
+	protected $fillable = ['invoice_id', 'credit_note_number'];
 	protected $protected = ['created_at', 'updated_at'];
 	protected $dates = ['deleted_at'];
 }

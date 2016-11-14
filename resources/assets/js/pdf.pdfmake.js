@@ -1241,7 +1241,6 @@ NINJA.invoiceDetailsCustom = function (invoice) {
    } else {*/
   var fields = [
     'invoice.invoice_number',
-    'invoice.credit_note_number',
     'invoice.blank', // ADD
     'invoice.custom_text_value1',
     'invoice.custom_text_value2',
@@ -1256,11 +1255,10 @@ NINJA.invoiceDetailsCustom = function (invoice) {
   ];
 
   if (invoice.save_deleted) {
-    fields.splice(1, 0, 'invoice.credit_note_number');
+    fields.splice(0, 0, 'invoice.credit_note_number');
   }
   //}
   var data = [];
-
   for (var i = 0; i < fields.length; i++) {
     var field = fields[i];
     var value = NINJA.renderInvoiceFieldCustom(invoice, field);
@@ -1268,9 +1266,8 @@ NINJA.invoiceDetailsCustom = function (invoice) {
       data.push(value);
     }
   }
-
   return NINJA.prepareDataPairs(data, 'invoiceDetailsCustom');
-}
+};
 // END --- ADD WIL 
 
 NINJA.renderClientOrAccountField = function (invoice, field) {

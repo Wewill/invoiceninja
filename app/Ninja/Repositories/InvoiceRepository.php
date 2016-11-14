@@ -1,6 +1,7 @@
 <?php namespace App\Ninja\Repositories;
 
 use App\Models\Account;
+use App\Models\CreditNote;
 use DB;
 use Utils;
 use Auth;
@@ -626,6 +627,36 @@ class InvoiceRepository extends BaseRepository
 
         return $invoice;
     }
+
+
+	/**
+	 * @param $invoice
+	 */
+	public function delete($invoice)
+	{
+		if ($invoice->is_deleted) {
+			return;
+		}
+
+		$invoice->is_deleted = true;
+		$invoice->save();
+
+		$credit_note = CreditNote::updateOrCreate([
+			'invoice_id' => $invoice->id,
+		]);
+
+		$credit_note->credit_note_number = str_pad($credit_note->id, 4, '0', STR_PAD_LEFT);
+
+		$credit_note->save();
+
+		$invoice->delete();
+
+		$className = $this->getEventClass($invoice, 'Deleted');
+
+		if (class_exists($className)) {
+			event(new $className($invoice));
+		}
+	}
 
     /**
      * @param Invoice $invoice
