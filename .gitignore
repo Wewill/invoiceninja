@@ -37,3 +37,9 @@ tests/_bootstrap.php
 /c3.php
 
 _ide_helper.php
+
+# compiled styles and scripts
+public/css
+public/js
+public/built.js
+public/built.js.map

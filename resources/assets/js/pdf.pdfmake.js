@@ -119,7 +119,7 @@ function GetPdfMake(invoice, javascript, callback) {
     // set page size
     dd.pageSize = invoice.account.page_size;
 
-    pdfMake.fonts = {}
+    pdfMake.fonts = {};
     fonts = window.invoiceFonts || invoice.invoice_fonts;
 
     // Add only the loaded fonts
@@ -205,8 +205,8 @@ NINJA.decodeJavascript = function(invoice, javascript)
         'clientPaymentTerms' : (invoice.client.payment_terms ? invoice.client.payment_terms : 'ø'),
         'quoteID' : (invoice.quote_id ? invoice.quote_id : 'ø'),
         'fontSizeSmallest': NINJA.fontSize - 2,
-        'diffuseurBalance': '>$diffuseurBalance', // ADD
-    }
+        'diffuseurBalance': '' + invoice.diffuser_balance // ADD
+    };
 
     for (var key in json) {
         // remove trailing commas for these fields
@@ -283,7 +283,7 @@ NINJA.decodeJavascript = function(invoice, javascript)
     }
 
     return javascript;
-}
+};
 
 
 NINJA.notesAndTerms = function(invoice)
@@ -301,7 +301,7 @@ NINJA.notesAndTerms = function(invoice)
     }
 
     return NINJA.prepareDataList(data, 'notesAndTerms');
-}
+};
 
 // ------- ADD WIL 
 
@@ -319,7 +319,7 @@ NINJA.copyrightCustom = function(invoice)
     	]);
 
     return data;
-}
+};
 
 NINJA.specificationsCustom = function(invoice)
 {
@@ -330,7 +330,7 @@ NINJA.specificationsCustom = function(invoice)
     }
  
     return data;
-}
+};
 
 
 NINJA.needsAndDelayCustom = function(invoice)
@@ -342,7 +342,7 @@ NINJA.needsAndDelayCustom = function(invoice)
     }
  
     return data;
-}
+};
 
 
 NINJA.notesCustom = function(invoice)
@@ -356,7 +356,7 @@ NINJA.notesCustom = function(invoice)
     }
  
     return data;
-}
+};
 
 NINJA.totalCustom = function(invoice)
 {
@@ -371,7 +371,7 @@ NINJA.totalCustom = function(invoice)
     //}
 
     return data;
-}
+};
 
 NINJA.termsCustom = function(invoice)
 {
@@ -386,7 +386,7 @@ NINJA.termsCustom = function(invoice)
     }
 
     return data;
-}
+};
 
 NINJA.paymentTermsCustom = function(invoice)
 {
@@ -399,7 +399,7 @@ NINJA.paymentTermsCustom = function(invoice)
     }
     
     return data;
-}
+};
 // -------  FIN ADD WIL 
 
 NINJA.invoiceColumns = function(invoice)
@@ -411,7 +411,7 @@ NINJA.invoiceColumns = function(invoice)
         columns.push("15%");
     }
 
-    columns.push("*")
+    columns.push("*");
 
     if (invoice.features.invoice_settings && account.custom_invoice_item_label1) {
         columns.push("10%");
@@ -432,7 +432,7 @@ NINJA.invoiceColumns = function(invoice)
     }
 
     return columns;
-}
+};
 
 NINJA.invoiceFooter = function(invoice)
 {
@@ -447,17 +447,17 @@ NINJA.invoiceFooter = function(invoice)
     } else {
         return footer || ' ';
     }
-}
+};
 
 NINJA.quantityWidth = function(invoice)
 {
     return invoice.account.hide_quantity == '1' ? '' : '"14%", ';
-}
+};
 
 NINJA.taxWidth = function(invoice)
 {
     return invoice.account.show_item_taxes == '1' ? '"14%", ' : '';
-}
+};
 
 NINJA.invoiceLines = function(invoice) {
     var account = invoice.account;
@@ -576,7 +576,7 @@ NINJA.invoiceLines = function(invoice) {
     }
 
     return NINJA.prepareDataTable(grid, 'invoiceItems');
-}
+};
 
 // ADD WIL
 NINJA.invoiceLinesCustom = function(invoice) {
@@ -624,7 +624,7 @@ NINJA.invoiceLinesCustom = function(invoice) {
    	for (var i = 1; i < colNumber; i++) {
 	   	grid[0].push({text: ' '});
    	}
-   	grid[1].push({text: '>$invoiceTitle', style: ['tableHeader', 'titleTableHeader'], colSpan: colNumber});
+   	grid[1].push({text: invoice.title, style: ['tableHeader', 'titleTableHeader'], colSpan: colNumber});
    	for (var i = 1; i < colNumber; i++) {
 	   	grid[1].push({text: ' '});
    	}
@@ -716,7 +716,7 @@ NINJA.invoiceLinesCustom = function(invoice) {
     }
 
     return NINJA.prepareDataTable(grid, 'invoiceItems');
-}
+};
 // END WIL 
 
 NINJA.invoiceDocuments = function(invoice) {
@@ -744,13 +744,13 @@ NINJA.invoiceDocuments = function(invoice) {
                 stackItem = {columns:[]};
                 stack.push(stackItem);
             }
-            stackItem.columns.push({stack:[{image:path,style:'invoiceDocument',fit:[150,150]}], width:175})
+            stackItem.columns.push({stack:[{image:path,style:'invoiceDocument',fit:[150,150]}], width:175});
             j++;
         }
     }
 
     return stack.length?{stack:stack}:[];
-}
+};
 
 NINJA.subtotals = function(invoice, hideBalance)
 {
@@ -824,7 +824,7 @@ NINJA.subtotals = function(invoice, hideBalance)
     }
 
     return NINJA.prepareDataPairs(data, 'subtotals');
-}
+};
 
 NINJA.subtotalsBalance = function(invoice) {
     var isPartial = NINJA.parseFloat(invoice.partial);
@@ -832,7 +832,7 @@ NINJA.subtotalsBalance = function(invoice) {
         {text: isPartial ? invoiceLabels.partial_due : invoiceLabels.balance_due, style:['subtotalsLabel', 'balanceDueLabel']},
         {text: formatMoneyInvoice(invoice.balance_amount, invoice), style:['subtotals', 'balanceDue']}
     ]];
-}
+};
 
 NINJA.accountDetails = function(invoice) {
     var account = invoice.account;
@@ -868,7 +868,7 @@ NINJA.accountDetails = function(invoice) {
     }
 
     return NINJA.prepareDataList(data, 'accountDetails');
-}
+};
 
 NINJA.accountAddress = function(invoice) {
     var account = invoice.account;
@@ -896,7 +896,7 @@ NINJA.accountAddress = function(invoice) {
     }
 
     return NINJA.prepareDataList(data, 'accountAddress');
-}
+};
 
 NINJA.renderInvoiceField = function(invoice, field) {
 
@@ -954,19 +954,28 @@ NINJA.renderInvoiceField = function(invoice, field) {
         } else {
             return false;
         }
+    } else if (field == 'invoice.order_from') {
+      return [
+        {text: invoiceLabels.order_from},
+        {text: invoice.order_from}
+      ];
+    } else if (field == 'invoice.reference') {
+      return [
+        {text: invoiceLabels.reference},
+        {text: invoice.reference}
+      ];
     }
-}
+};
 
 // --- ADD WIL 
 NINJA.renderInvoiceFieldCustom = function(invoice, field) {
 
-    var account = invoice.account;
-
+  var account = invoice.account;
     if (field == 'invoice.invoice_number') {
-        return [
-            {text: (invoice.is_quote ? invoiceLabels.quote_number : invoiceLabels.invoice_number) + '' + invoice.invoice_number, style: ['invoiceNumberAndLabel'], colSpan: 2}, //colSpan
-            {text: ' '}
-        ];
+      return [
+        {text: (invoice.is_quote ? invoiceLabels.quote_number : invoiceLabels.invoice_number) + '' + invoice.invoice_number, style: ['invoiceNumberAndLabel'], colSpan: 2}, //colSpan
+        {text: ' '}
+      ];
     } else if (field == 'invoice.blank') {
         return [
             {text: ' ', style: ['tableBlank']},
@@ -1026,8 +1035,18 @@ NINJA.renderInvoiceFieldCustom = function(invoice, field) {
         } else {
             return false;
         }
+    } else if (field == 'invoice.order_from') {
+      return [
+        {text: invoiceLabels.order_from},
+        {text:invoice.order_from}
+      ];
+    } else if (field == 'invoice.reference') {
+      return [
+        {text: invoiceLabels.reference},
+        {text: invoice.reference}
+      ];
     }
-}
+};
 // --- END ADD WIL 
 
 NINJA.invoiceDetails = function(invoice) {
@@ -1045,6 +1064,8 @@ NINJA.invoiceDetails = function(invoice) {
             'invoice.partial_due',
             'invoice.custom_text_value1',
             'invoice.custom_text_value2',
+            'invoice.order_from',
+            'invoice.reference'
         ];
     }
     var data = [];
@@ -1058,7 +1079,7 @@ NINJA.invoiceDetails = function(invoice) {
     }
 
     return NINJA.prepareDataPairs(data, 'invoiceDetails');
-}
+};
 
 // ------ ADD WIL 
 NINJA.invoiceDetailsCustom = function(invoice) {
@@ -1078,6 +1099,8 @@ NINJA.invoiceDetailsCustom = function(invoice) {
             'invoice.due_date',
             'invoice.balance_due',
             'invoice.partial_due',
+            'invoice.order_from',
+            'invoice.reference'
         ];
     //}
     var data = [];
@@ -1091,7 +1114,7 @@ NINJA.invoiceDetailsCustom = function(invoice) {
     }
 
     return NINJA.prepareDataPairs(data, 'invoiceDetailsCustom');
-}
+};
 // END --- ADD WIL 
 
 NINJA.renderClientOrAccountField = function(invoice, field) {
@@ -1193,7 +1216,7 @@ NINJA.renderClientOrAccountField = function(invoice, field) {
     }
 
     return false;
-}
+};
 
 NINJA.clientDetails = function(invoice) {
     var account = invoice.account;
@@ -1226,15 +1249,15 @@ NINJA.clientDetails = function(invoice) {
     }
 
     return NINJA.prepareDataList(data, 'clientDetails');
-}
+};
 
 NINJA.getPrimaryColor = function(defaultColor) {
     return NINJA.primaryColor ? NINJA.primaryColor : defaultColor;
-}
+};
 
 NINJA.getSecondaryColor = function(defaultColor) {
     return NINJA.primaryColor ? NINJA.secondaryColor : defaultColor;
-}
+};
 
 // remove blanks and add section style to all elements
 NINJA.prepareDataList = function(oldData, section) {
@@ -1246,7 +1269,7 @@ NINJA.prepareDataList = function(oldData, section) {
         }
     }
     return newData;
-}
+};
 
 NINJA.prepareDataTable = function(oldData, section) {
     var newData = [];
@@ -1264,7 +1287,7 @@ NINJA.prepareDataTable = function(oldData, section) {
         }
     }
     return newData;
-}
+};
 
 NINJA.prepareDataPairs = function(oldData, section) {
     var newData = [];
@@ -1285,7 +1308,7 @@ NINJA.prepareDataPairs = function(oldData, section) {
         }
     }
     return newData;
-}
+};
 
 NINJA.processItem = function(item, section) {
     if (item.style && item.style instanceof Array) {
@@ -1294,7 +1317,7 @@ NINJA.processItem = function(item, section) {
         item.style = [section];
     }
     return item;
-}
+};
 
 
 NINJA.parseMarkdownText = function(val, groupText)
@@ -1313,12 +1336,12 @@ NINJA.parseMarkdownText = function(val, groupText)
         var rule = rules[i];
         var formatter = function(data) {
             return $.extend(data, rule[1]);
-        }
+        };
         parts = NINJA.parseRegExp(parts, rule[0], formatter, true);
     }
 
     return parts.length > 1 ? parts : val;
-}
+};
 
 /*
 NINJA.parseMarkdownStack = function(val)
@@ -1354,7 +1377,7 @@ NINJA.parseRegExp = function(val, regExpStr, formatter, groupText)
     }
 
     return parts.length > 1 ? parts : val;
-}
+};
 
 NINJA.parseRegExpLine = function(line, regExp, formatter, groupText)
 {
@@ -1380,4 +1403,4 @@ NINJA.parseRegExpLine = function(line, regExp, formatter, groupText)
     }
 
     return line;
-}
+};

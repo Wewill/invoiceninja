@@ -140,6 +140,12 @@
 
                 {!! Former::text('partial')->data_bind("value: partial, valueUpdate: 'afterkeydown'")->onchange('onPartialChange()')
                             ->rel('tooltip')->data_toggle('tooltip')->data_placement('bottom')->title(trans('texts.partial_value')) !!}
+
+				<div style="margin-top:35px">
+				{!! Former::text('order_from')->data_bind("value: order_from, valueUpdate: 'afterkeydown'")
+							->rel('tooltip')->data_toggle('tooltip')->data_placement('bottom')
+							->title(trans('texts.order_from')) !!}
+				</div>
 			</div>
             @if ($entityType == ENTITY_INVOICE)
 			<div data-bind="visible: is_recurring" style="display: none">
@@ -227,8 +233,18 @@
                 </div>
             </div>
             @endif
+
+			{!! Former::text('reference')->data_bind("value: reference, valueUpdate: 'afterkeydown'")
+						->rel('tooltip')->data_toggle('tooltip')->data_placement('bottom')->title(trans('texts.reference')) !!}
 		</div>
 	</div>
+
+    <div class="row">
+	    <div class="col-md-12">
+		    {!! Former::text('title')->data_bind("value: title, valueUpdate: 'afterkeydown'")
+		        ->rel('tooltip')->data_toggle('tooltip')->data_placement('bottom')->title(trans('texts.title')) !!}
+	    </div>
+    </div>
 
 	<div class="table-responsive" style="padding-top:4px">
 	<table class="table invoice-table">
@@ -975,7 +991,9 @@
 			});
 		}
 
-		$('#invoice_footer, #terms, #public_notes, #invoice_number, #invoice_date, #due_date, #start_date, #po_number, #discount, #currency_id, #invoice_design_id, #recurring, #is_amount_discount, #partial, #custom_text_value1, #custom_text_value2').change(function() {
+		$('#invoice_footer, #terms, #public_notes, #invoice_number, #invoice_date, #due_date, #start_date, ' +
+			'#po_number, #discount, #currency_id, #invoice_design_id, #recurring, #is_amount_discount, #partial, ' +
+			'#custom_text_value1, #custom_text_value2, #reference, #title, #order_from').change(function() {
             $('#downloadPdfButton').attr('disabled', true);
 			setTimeout(function() {
 				refreshPDF(true);

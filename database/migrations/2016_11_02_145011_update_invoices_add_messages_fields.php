@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class UpdateInvoicesAddMessagesFields extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
 	public function up()
 	{
 		Schema::table('invoices', function (Blueprint $table){
