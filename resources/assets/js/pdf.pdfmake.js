@@ -726,7 +726,13 @@ NINJA.invoiceLinesCustom = function (invoice) {
   for (var i = 1; i < colNumber; i++) {
     grid[0].push({text: ' '});
   }
-  grid[1].push({text: invoice.title, style: ['tableHeader', 'titleTableHeader'], colSpan: colNumber});
+
+  if (!!invoice.title && invoice.title != 'undefined') {
+    grid[1].push({text: invoice.title, style: ['tableHeader', 'titleTableHeader'], colSpan: colNumber});
+  } else {
+    grid[1].push({text: ' '});
+  }
+
   for (var i = 1; i < colNumber; i++) {
     grid[1].push({text: ' '});
   }
