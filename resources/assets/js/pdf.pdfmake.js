@@ -15,6 +15,8 @@ NINJA.TEMPLATES = {
   WAGXW: "12" // ADD WIL
 };
 
+var ADDITIONAL_PAGES_COUNT = 2;
+
 function GetPdfMake(invoice, javascript, callback) {
 
   javascript = NINJA.decodeJavascript(invoice, javascript);
@@ -63,11 +65,15 @@ function GetPdfMake(invoice, javascript, callback) {
     if (invoice.features.customize_invoice_design) {
       if (key === 'header') {
         return function (page, pages) {
-          return page === 1 || invoice.account.all_pages_header == '1' ? val : '';
+          if ( page <= (pages - ADDITIONAL_PAGES_COUNT) ) {
+            return page === 1 || invoice.account.all_pages_header == '1' ? val : '';
+          }
         }
       } else if (key === 'footer') {
         return function (page, pages) {
-          return page === pages || invoice.account.all_pages_footer == '1' ? val : '';
+          if ( page <= (pages - ADDITIONAL_PAGES_COUNT) ) {
+            return page === pages || invoice.account.all_pages_footer == '1' ? val : '';
+          }
         }
       }
     }
@@ -155,6 +161,7 @@ function GetPdfMake(invoice, javascript, callback) {
     margin: [-60, (dd.pageMargins[1] * (dd.pageMargins[1] < 100 ? 0.75 : 0.95) * -1)],
     pageBreak: 'before'
   });
+
   dd.content.push({
     image: AFFILIATEimg,
     width: 575,
