@@ -239,12 +239,13 @@
 		</div>
 	</div>
 
-    <div class="row">
-	    <div class="col-md-12">
-		    {!! Former::text('title')->data_bind("value: title, valueUpdate: 'afterkeydown'")
-		        ->rel('tooltip')->data_toggle('tooltip')->data_placement('bottom')->title(trans('texts.title')) !!}
+    <div class="form-group">
+	    <label for="title" class="control-label col-lg-1 col-sm-1">{{ trans('texts.title') }}</label>
+	    <div class="col-lg-11 col-sm-11">
+		    <input class="form-control" data-bind="value: title, valueUpdate: 'afterkeydown'" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="" id="title" name="title" data-original-title="Title" type="text">
 	    </div>
     </div>
+
 
 	<div class="table-responsive" style="padding-top:4px">
 	<table class="table invoice-table">
