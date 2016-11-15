@@ -26,7 +26,7 @@ elixir.config.css.minifier.pluginOptions = {
  *
  * @type {string}
  */
-var bowerDir = './resources/assets/bower';
+var bowerDir = '../bower';
 
 elixir(function(mix) {
 
@@ -118,19 +118,6 @@ elixir(function(mix) {
         'script.js',
         'pdf.pdfmake.js'
     ], 'public/built.js');
-
-  //jsoneditor
-  mix.copy(bowerDir + '/jsoneditor/dist/jsoneditor.min.js', 'public/js');
-  mix.copy(bowerDir + '/jsoneditor/dist/jsoneditor.min.css', 'public/css');
-  mix.copy(bowerDir + '/jsoneditor/dist/img/jsoneditor-icons.svg', 'public/css/img');
-
-  //lightbox
-  mix.copy(bowerDir + '/lightbox2/dist/js/lightbox.min.js', 'public/js');
-  mix.copy(bowerDir + '/lightbox2/dist/css/lightbox.css', 'public/css');
-
-  //bootstrap
-  mix.copy(bowerDir + '/bootstrap/dist/js/bootstrap.min.js', 'public/js');
-  mix.copy(bowerDir + '/bootstrap/dist/css/bootstrap.min.css', 'public/css');
 
 
 });
