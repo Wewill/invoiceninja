@@ -447,7 +447,7 @@ NINJA.notesCustom = function (invoice) {
   }
 
   return data;
-}
+};
 
 NINJA.totalCustom = function (invoice) {
   var data = [];
@@ -859,7 +859,7 @@ NINJA.invoiceDocuments = function (invoice) {
         stackItem = {columns: []};
         stack.push(stackItem);
       }
-      stackItem.columns.push({stack: [{image: path, style: 'invoiceDocument', fit: [150, 150]}], width: 175})
+      stackItem.columns.push({stack: [{image: path, style: 'invoiceDocument', fit: [150, 150]}], width: 175});
       j++;
     }
   }
