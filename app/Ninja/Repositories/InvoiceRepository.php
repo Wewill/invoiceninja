@@ -547,18 +547,12 @@ class InvoiceRepository extends BaseRepository
             }
         }
 
+	    InvoiceItem::where(['invoice_id' => $invoice->id])->delete();
+
         foreach ($data['invoice_items'] as $item) {
             if (empty($item['cost']) || empty($item['product_key']) || empty($item['qty'])) {
                 continue;
             }
-
-            $item_exists = InvoiceItem::where([
-            	'product_key' => $item['product_key'],
-	            'qty' => $item['qty'],
-	            'cost' => $item['cost']
-            ])->exists();
-
-	        if ($item_exists) continue;
 
             $task = false;
             if (isset($item['task_public_id']) && $item['task_public_id']) {
@@ -580,23 +574,19 @@ class InvoiceRepository extends BaseRepository
                 }
             }
 
-            if ($productKey = trim($item['product_key'])) {
-                if (\Auth::user()->account->update_products && ! $invoice->has_tasks && ! $invoice->has_expenses) {
-                    $product = Product::findProductByKey($productKey);
-                    if (!$product) {
-                        if (Auth::user()->can('create', ENTITY_PRODUCT)) {
-                            $product = Product::createNew();
-                            $product->product_key = trim($item['product_key']);
-                        }
-                        else{
-                            $product = null;
-                        }
-                    }
-                    if ($product && (Auth::user()->can('edit', $product))) {
-                        $product->notes = ($task || $expense) ? '' : $item['notes'];
-                        $product->cost = $expense ? 0 : $item['cost'];
-                        $product->save();
-                    }
+
+            if (\Auth::user()->account->update_products && ! $invoice->has_tasks && ! $invoice->has_expenses) {
+	            $productKey = trim($item['product_key']);
+	            $product = Product::findProductByKey($productKey);
+                if (!$product && Auth::user()->can('create', ENTITY_PRODUCT)) {
+                    $product = Product::createNew();
+                    $product->product_key = trim($item['product_key']);
+                }
+
+                if ($product && (Auth::user()->can('edit', $product))) {
+                    $product->notes = ($task || $expense) ? '' : $item['notes'];
+                    $product->cost = $expense ? 0 : $item['cost'];
+                    $product->save();
                 }
             }
 
