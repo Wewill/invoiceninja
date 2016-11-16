@@ -328,7 +328,7 @@
 				<td style="cursor:pointer" class="hide-border td-icon">
                     <i style="padding-left:2px" data-bind="click: $parent.removeItem, visible: actionsVisible() &amp;&amp;
                     $index() < ($parent.invoice_items().length - 1) &amp;&amp;
-                    $parent.invoice_items().length > 1" class="fa fa-minus-circle redlink" title="Remove item"/>
+                    $parent.invoice_items().length > 1" class="fa fa-minus-circle redlink" title="Remove item">&nbsp;</i>
 				</td>
 			</tr>
 		</tbody>
@@ -336,7 +336,7 @@
 
 		<tfoot>
 			<tr>
-				<td class="hide-border"/>
+				<td class="hide-border">&nbsp;</td>
 				<td class="hide-border" colspan="{{ 2 + ($account->showCustomField('custom_invoice_item_label1') ? 1 : 0) + ($account->showCustomField('custom_invoice_item_label2') ? 1 : 0) }}" rowspan="6" style="vertical-align:top">
 					<br/>
                     <div role="tabpanel">
@@ -443,48 +443,48 @@
                 </div>
 
 				</td>
-				<td class="hide-border" style="display:none" data-bind="visible: $root.invoice_item_taxes.show"/>
+				<td class="hide-border" style="display:none" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
 				<td colspan="{{ $account->hide_quantity ? 1 : 2 }}">{{ trans('texts.subtotal') }}</td>
-				<td style="text-align: right"><span data-bind="text: totals.subtotal"/></td>
+				<td style="text-align: right"><span data-bind="text: totals.subtotal">&nbsp;</span></td>
 			</tr>
 
 			<tr style="display:none" data-bind="visible: discount() != 0">
-				<td class="hide-border" colspan="3"/>
-				<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show"/>
+				<td class="hide-border" colspan="3">&nbsp;</td>
+				<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
 				<td colspan="{{ $account->hide_quantity ? 1 : 2 }}">{{ trans('texts.discount') }}</td>
-				<td style="text-align: right"><span data-bind="text: totals.discounted"/></td>
+				<td style="text-align: right"><span data-bind="text: totals.discounted">&nbsp;</span></td>
 			</tr>
 
             @if ($account->showCustomField('custom_invoice_label1', $invoice) && $account->custom_invoice_taxes1)
 				<tr>
-					<td class="hide-border" colspan="3"/>
-					<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show"/>
+					<td class="hide-border" colspan="3">&nbsp;</td>
+					<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
 					<td colspan="{{ $account->hide_quantity ? 1 : 2 }}">{{ $account->custom_invoice_label1 }}</td>
-					<td style="text-align: right;padding-right: 28px" colspan="2"><input name="custom_value1" class="form-control" data-bind="value: custom_value1, valueUpdate: 'afterkeydown'"/></td>
+					<td style="text-align: right;padding-right: 28px" colspan="2"><input name="custom_value1" class="form-control" data-bind="value: custom_value1, valueUpdate: 'afterkeydown'"></td>
 				</tr>
 			@endif
 
             @if ($account->showCustomField('custom_invoice_label2', $invoice) && $account->custom_invoice_taxes2)
 				<tr>
-					<td class="hide-border" colspan="3"/>
-					<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show"/>
+					<td class="hide-border" colspan="3">&nbsp;</td>
+					<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
 					<td colspan="{{ $account->hide_quantity ? 1 : 2 }}">{{ $account->custom_invoice_label2 }}</td>
-					<td style="text-align: right;padding-right: 28px" colspan="2"><input name="custom_value2" class="form-control" data-bind="value: custom_value2, valueUpdate: 'afterkeydown'"/></td>
+					<td style="text-align: right;padding-right: 28px" colspan="2"><input name="custom_value2" class="form-control" data-bind="value: custom_value2, valueUpdate: 'afterkeydown'"></td>
 				</tr>
 			@endif
 
             <tr style="display:none" data-bind="visible: $root.invoice_item_taxes.show &amp;&amp; totals.hasItemTaxes">
-                <td class="hide-border" colspan="4"/>
+                <td class="hide-border" colspan="4">&nbsp;</td>
                 @if (!$account->hide_quantity)
                     <td>{{ trans('texts.tax') }}</td>
                 @endif
-                <td style="min-width:120px"><span data-bind="html: totals.itemTaxRates"/></td>
-                <td style="text-align: right"><span data-bind="html: totals.itemTaxAmounts"/></td>
+                <td style="min-width:120px"><span data-bind="html: totals.itemTaxRates">&nbsp;</span></td>
+                <td style="text-align: right"><span data-bind="html: totals.itemTaxAmounts">&nbsp;</span></td>
             </tr>
 
 			<tr style="display:none" data-bind="visible: $root.invoice_taxes.show">
-				<td class="hide-border" colspan="3"/>
-				<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show"/>
+				<td class="hide-border" colspan="3">&nbsp;</td>
+				<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
 				@if (!$account->hide_quantity)
 					<td>{{ trans('texts.tax') }}</td>
 				@endif
@@ -509,46 +509,189 @@
                     <input type="text" name="tax_name2" data-bind="value: tax_name2" style="display:none">
                     <input type="text" name="tax_rate2" data-bind="value: tax_rate2" style="display:none">
                 </td>
-				<td style="text-align: right"><span data-bind="text: totals.taxAmount"/></td>
+				<td style="text-align: right"><span data-bind="text: totals.taxAmount">&nbsp;</td>
 			</tr>
 
             @if ($account->showCustomField('custom_invoice_label1', $invoice) && !$account->custom_invoice_taxes1)
 				<tr>
-					<td class="hide-border" colspan="3"/>
-					<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show"/>
+					<td class="hide-border" colspan="3">&nbsp;</td>
+					<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
 					<td colspan="{{ $account->hide_quantity ? 1 : 2 }}">{{ $account->custom_invoice_label1 }}</td>
-					<td style="text-align: right;padding-right: 28px" colspan="2"><input name="custom_value1" class="form-control" data-bind="value: custom_value1, valueUpdate: 'afterkeydown'"/></td>
+					<td style="text-align: right;padding-right: 28px" colspan="2"><input name="custom_value1" class="form-control" data-bind="value: custom_value1, valueUpdate: 'afterkeydown'">&nbsp;</td>
 				</tr>
 			@endif
 
             @if ($account->showCustomField('custom_invoice_label2', $invoice) && !$account->custom_invoice_taxes2)
 				<tr>
-					<td class="hide-border" colspan="3"/>
-					<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show"/>
+					<td class="hide-border" colspan="3">&nbsp;</td>
+					<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
 					<td colspan="{{ $account->hide_quantity ? 1 : 2 }}">{{ $account->custom_invoice_label2 }}</td>
-					<td style="text-align: right;padding-right: 28px" colspan="2"><input name="custom_value2" class="form-control" data-bind="value: custom_value2, valueUpdate: 'afterkeydown'"/></td>
+					<td style="text-align: right;padding-right: 28px" colspan="2"><input name="custom_value2" class="form-control" data-bind="value: custom_value2, valueUpdate: 'afterkeydown'">&nbsp;</td>
 				</tr>
 			@endif
 
 			@if (!$account->hide_paid_to_date)
 				<tr>
-					<td class="hide-border" colspan="3"/>
-					<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show"/>
+					<td class="hide-border" colspan="3">&nbsp;</td>
+					<td style="display:none" class="hide-border" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
 					<td colspan="{{ $account->hide_quantity ? 1 : 2 }}">{{ trans('texts.paid_to_date') }}</td>
 					<td style="text-align: right" data-bind="text: totals.paidToDate"></td>
 				</tr>
 			@endif
 
 			<tr data-bind="style: { 'font-weight': partial() ? 'normal' : 'bold', 'font-size': partial() ? '1em' : '1.05em' }">
-				<td class="hide-border" colspan="3"/>
-				<td class="hide-border" style="display:none" data-bind="visible: $root.invoice_item_taxes.show"/>
+				<td class="hide-border" colspan="3">&nbsp;</td>
+				<td class="hide-border" style="display:none" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
 				<td class="hide-border" data-bind="css: {'hide-border': !partial()}" colspan="{{ $account->hide_quantity ? 1 : 2 }}">{{ $entityType == ENTITY_INVOICE ? $invoiceLabels['balance_due'] : trans('texts.total') }}</td>
 				<td class="hide-border" data-bind="css: {'hide-border': !partial()}" style="text-align: right"><span data-bind="text: totals.total"></span></td>
 			</tr>
 
+			{{-- COPYRIGHT AREA HERE --}}
+
+			<tr>
+				<td colspan="3">&nbsp;</td>
+				<td class="hide-border" colspan="4">
+					<label for="copyrightIncluded" style="font-weight:normal;">
+						<input type="checkbox" id="copyrightIncluded" name="copyright_included">
+						{{ trans('texts.is_copyright_included') }}
+					</label>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="3">&nbsp;</td>
+				<td class="hide-border" colspan="4">
+					<label for="invoiceExclusivity" style="font-weight:normal;">{{ trans('texts.sel_exclusivity') }}</label>
+					<select name="invoice_exclusivity" id="invoiceExclusivity">
+						<option value="0">{{ trans('texts.no') }}</option>
+						<option value="1">{{ trans('texts.yes') }}</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="3">&nbsp;</td>
+				<td class="hide-border" colspan="4">
+					<label for="invoiceUtilization" style="font-weight:normal;">{{ trans('texts.sel_utilization') }}</label>
+					<select name="invoice_utilization" id="invoiceUtilization">
+						<option value="0.1">{{ trans('texts.ut_local') }}</option>
+						<option value="0.2">{{ trans('texts.ut_national') }}</option>
+						<option value="1">{{ trans('texts.ut_european') }}</option>
+						<option value="2">{{ trans('texts.ut_world') }}</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="3">&nbsp;</td>
+				<td class="hide-border" colspan="4">
+					<label for="invoiceDuration" style="font-weight:normal;">{{ trans('texts.sel_duration') }}</label>
+					<select name="invoice_utilization" id="invoiceDuration">
+						<option value="0.01">
+							{{ trans_choice('texts.du_period', 1,
+							['period' => mb_strtolower(str_plural(trans('texts.du_day'), 1))]) }}
+						</option>
+						<option value="0.02">
+							{{ trans_choice('texts.du_period', 1,
+							['period' => mb_strtolower(str_plural(trans('texts.du_week'), 1))]) }}
+						</option>
+						<option value="0.03">
+							{{ trans_choice('texts.du_period', 1,
+							['period' => mb_strtolower(str_plural(trans('texts.du_month'), 1))]) }}
+						</option>
+						<option value="0.05">
+							{{ trans_choice('texts.du_period', 3,
+							['period' => mb_strtolower(str_plural(trans('texts.du_month'), 3))]) }}
+						</option>
+						<option value="0.08">
+							{{ trans_choice('texts.du_period', 6,
+							['period' => mb_strtolower(str_plural(trans('texts.du_month'), 6))]) }}
+						</option>
+						<option value="0.1">
+							{{ trans_choice('texts.du_period', 1,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 1))]) }}
+						</option>
+						<option value="0.15">
+							{{ trans_choice('texts.du_period', 2,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 2))]) }}
+						</option>
+						<option value="0.2">
+							{{ trans_choice('texts.du_period', 3,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 3))]) }}
+						</option>
+						<option value="0.25">
+							{{ trans_choice('texts.du_period', 4,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 4))]) }}
+						</option>
+						<option value="0.3">
+							{{ trans_choice('texts.du_period', 5,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 5))]) }}
+						</option>
+						<option value="0.35">
+							{{ trans_choice('texts.du_period', 6,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 6))]) }}
+						</option>
+						<option value="0.4">
+							{{ trans_choice('texts.du_period', 7,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 7))]) }}
+						</option>
+						<option value="0.45">
+							{{ trans_choice('texts.du_period', 8,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 8))]) }}
+						</option>
+						<option value="0.5">
+							{{ trans_choice('texts.du_period', 10,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 10))]) }}
+						</option>
+						<option value="0.6">
+							{{ trans_choice('texts.du_period', 15,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 15))]) }}
+						</option>
+						<option value="0.7">
+							{{ trans_choice('texts.du_period', 20,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 20))]) }}
+						</option>
+						<option value="0.8">
+							{{ trans_choice('texts.du_period', 30,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 30))]) }}
+						</option>
+						<option value="0.9">
+							{{ trans_choice('texts.du_period', 40,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 40))]) }}
+						</option>
+						<option value="0.9">
+							{{ trans_choice('texts.du_period', 40,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 40))]) }}
+						</option>
+						<option value="1">
+							{{ trans_choice('texts.du_period', 50,
+							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 50))]) }}
+						</option>
+						<option value="2">
+							{{ trans('texts.du_period_legal') }}
+						</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="3">&nbsp;</td>
+				<td class="hide-border" colspan="4">
+					<label for="invoiceUtilization" style="font-weight:normal;">{{ trans('texts.sel_scope_visibility') }}</label>
+					<select name="invoice_utilization" id="invoiceUtilization">
+						<option value="0.1">{{ trans('texts.sc_low') }}</option>
+						<option value="0.2">{{ trans('texts.sc_med') }}</option>
+						<option value="0.5">{{ trans('texts.sc_high') }}</option>
+						<option value="1">{{ trans('texts.sc_very_high') }}</option>
+					</select>
+				</td>
+			</tr>
+
+			{{-- COPYRIGHT AREA ENDS --}}
+			
 			<tr style="font-size:1.05em; display:none; font-weight:bold" data-bind="visible: partial">
-				<td class="hide-border" colspan="3"/>
-				<td class="hide-border" style="display:none" data-bind="visible: $root.invoice_item_taxes.show"/>
+				<td class="hide-border" colspan="3">&nbsp;</td>
+				<td class="hide-border" style="display:none" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
 				<td class="hide-border" colspan="{{ $account->hide_quantity ? 1 : 2 }}">{{ $invoiceLabels['partial_due'] }}</td>
 				<td class="hide-border" style="text-align: right"><span data-bind="text: totals.partial"></span></td>
 			</tr>
@@ -1069,9 +1212,9 @@
 
         @if (Auth::user()->account->hasFeature(FEATURE_DOCUMENTS))
         $('.main-form').submit(function(){
-            if($('#document-upload .dropzone .fallback input').val())$(this).attr('enctype', 'multipart/form-data')
+            if($('#document-upload .dropzone .fallback input').val())$(this).attr('enctype', 'multipart/form-data');
             else $(this).removeAttr('enctype')
-        })
+        });
 
         // Initialize document upload
         window.dropzone = false;
@@ -1080,7 +1223,7 @@
                 return;
             }
 
-            var target = $(e.target).attr('href') // activated tab
+            var target = $(e.target).attr('href'); // activated tab
             if (target != '#attached-documents') {
                 return;
             }
@@ -1134,7 +1277,7 @@
 	});
 
     function onFrequencyChange(){
-        var currentName = $('#frequency_id').find('option:selected').text()
+        var currentName = $('#frequency_id').find('option:selected').text();
         var currentDueDateNumber = $('#recurring_due_date').find('option:selected').attr('data-num');
         var optionClass = currentName && currentName.toLowerCase().indexOf('week') > -1 ? 'weekly' :  'monthly';
         var replacementOption = $('#recurring_due_date option[data-num=' + currentDueDateNumber + '].' + optionClass);
@@ -1665,7 +1808,7 @@
 
     function handleDocumentUploaded(file, response){
         window.countUploadingDocuments--;
-        file.public_id = response.document.public_id
+        file.public_id = response.document.public_id;
         model.invoice().documents()[file.index].update(response.document);
         @if ($account->invoice_embed_documents)
             refreshPDF(true);

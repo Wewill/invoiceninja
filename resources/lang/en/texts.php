@@ -2168,7 +2168,36 @@ $LANG = array(
     'expense_will_create' => 'expense will be created',
     'expenses_will_create' => 'expenses will be created',
     'created_expenses' => 'Successfully created :count expense(s)',
-    
+
+
+	'copyright_included' => 'Included',
+	'is_copyright_included' => 'Copyright included?',
+
+	'sel_exclusivity' => 'Exclusivity',
+	'sel_utilization' => 'Utilization',
+	'sel_duration' => 'Duration',
+	'sel_scope_visibility' => 'Scope - Visibility',
+
+	'ex_no' => 'No',
+	'ex_yes' => 'Exclusivity',
+
+	'ut_local' => 'Local',
+	'ut_national' => 'National',
+	'ut_european' => 'European',
+	'ut_world' => 'World',
+
+	'du_period' => '{1}For 1 :period|[2,Inf] For :count :period',
+    'du_period_legal' => 'For legal duration',
+	'du_day' => 'day',
+	'du_week' => 'week',
+	'du_month' => 'month',
+	'du_year' => 'year',
+
+	'sc_low' => 'Low scope',
+	'sc_med' => 'Medium scope',
+	'sc_high' => 'High scope',
+	'sc_very_high' => 'Very high scope',
+
 );
 
 return $LANG;

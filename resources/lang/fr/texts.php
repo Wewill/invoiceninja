@@ -2162,6 +2162,29 @@ $LANG = array(
     'expense_will_create' => 'expense will be created',
     'expenses_will_create' => 'expenses will be created',
     'created_expenses' => 'Successfully created :count expense(s)',
+
+    'copyright_included' => 'Inclus',
+    'is_copyright_included' => 'Cession de droit incluse?',
+
+    'ex_no' => 'Non exclusivité',
+    'ex_yes' => 'Exclusivité',
+
+    'ut_local' => 'Régionale',
+    'ut_national' => 'Nationale',
+    'ut_european' => 'Européene',
+    'ut_world' => 'Mondiale',
+
+    'du_period' => '{1}Pour 1 :period|[2,Inf] For :count :period',
+    'du_period_legal' => 'Pour durée maximum légale',
+    'du_day' => 'journée',
+    'du_week' => 'semaine',
+    'du_month' => 'mois',
+    'du_year' => 'an',
+
+    'sc_low' => 'Faible étendue',
+    'sc_med' => 'Moyenne étendue',
+    'sc_high' => 'Forte étendue',
+    'sc_very_high' => 'Très forte étendue',
     
 );
 
