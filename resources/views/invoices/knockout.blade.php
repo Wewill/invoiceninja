@@ -241,6 +241,12 @@ function InvoiceModel(data) {
     self.custom_text_value1 = ko.observable();
     self.custom_text_value2 = ko.observable();
 
+    self.copyright_included = ko.observable();
+    self.exclusivity_cf = ko.observable();
+    self.utilization_cf = ko.observable();
+    self.duration_cf = ko.observable();
+    self.scope_visibility_cf = ko.observable();
+
     self.mapping = {
         'client': {
             create: function(options) {
@@ -555,6 +561,12 @@ function InvoiceModel(data) {
         var taxAmount1 = roundToTwo(total * (parseFloat(self.tax_rate1())/100));
         var taxAmount2 = roundToTwo(total * (parseFloat(self.tax_rate2())/100));
         total = NINJA.parseFloat(total) + taxAmount1 + taxAmount2;
+
+	    if (self.copyright_included()) {
+		    total += total * (NINJA.parseFloat(self.exclusivity_cf()) + NINJA.parseFloat(self.utilization_cf()) +
+			    NINJA.parseFloat(self.duration_cf()) + NINJA.parseFloat(self.scope_visibility_cf()));
+	    }
+
         total = roundToTwo(total);
 
         var taxes = self.totals.itemTaxes();

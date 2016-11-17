@@ -2172,6 +2172,7 @@ $LANG = array(
 
 	'copyright_included' => 'Included',
 	'is_copyright_included' => 'Copyright included?',
+	'copyright_amount' => 'Copyright amount',
 
 	'sel_exclusivity' => 'Exclusivity',
 	'sel_utilization' => 'Utilization',
@@ -2191,7 +2192,9 @@ $LANG = array(
 	'du_day' => 'day',
 	'du_week' => 'week',
 	'du_month' => 'month',
+	'du_months' => 'months',
 	'du_year' => 'year',
+	'du_years' => 'years',
 
 	'sc_low' => 'Low scope',
 	'sc_med' => 'Medium scope',

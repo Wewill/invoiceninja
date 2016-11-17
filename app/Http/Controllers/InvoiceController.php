@@ -183,18 +183,25 @@ class InvoiceController extends BaseController
 		}
 
 		$data = [
-				'clients' => $clients->get(),
-				'entityType' => $entityType,
-				'showBreadcrumbs' => $clone,
-				'invoice' => $invoice,
-				'method' => $method,
-				'invitationContactIds' => $contactIds,
-				'url' => $url,
-				'title' => trans("texts.edit_{$entityType}"),
-				'client' => $invoice->client,
-				'isRecurring' => $invoice->is_recurring,
-				'actions' => $actions,
-				'lastSent' => $lastSent];
+			'clients' => $clients->get(),
+			'entityType' => $entityType,
+			'showBreadcrumbs' => $clone,
+			'invoice' => $invoice,
+			'method' => $method,
+			'invitationContactIds' => $contactIds,
+			'url' => $url,
+			'title' => trans("texts.edit_{$entityType}"),
+			'client' => $invoice->client,
+			'isRecurring' => $invoice->is_recurring,
+			'actions' => $actions,
+			'lastSent' => $lastSent,
+
+			'sel_exclusivity' => Invoice::selExclusivityOptions(),
+			'sel_utilization' => Invoice::selUtilizationOptions(),
+			'sel_duration' => Invoice::selDurationOptions(),
+			'sel_scope_visibility' => Invoice::selScopeVisibilityOptions(),
+		];
+
 		$data = array_merge($data, self::getViewModel($invoice));
 
 		if ($invoice->isSent() && $invoice->getAutoBillEnabled() && !$invoice->isPaid()) {

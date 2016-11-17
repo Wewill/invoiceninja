@@ -539,6 +539,61 @@
 				</tr>
 			@endif
 
+			{{-- COPYRIGHT AREA HERE --}}
+
+			<tr>
+				<td class="hide-border" colspan="3">&nbsp;</td>
+				<td colspan="3">
+					<label for="copyrightIncluded" style="font-weight:normal;">
+						<input type="checkbox" id="copyrightIncluded" name="copyright_included"
+						       data-bind="checked: copyright_included">
+						{{ trans('texts.is_copyright_included') }}
+					</label>
+				</td>
+			</tr>
+
+			<tr>
+				<td class="hide-border" colspan="2">&nbsp;</td>
+				<td colspan="3">
+					{!! Former::select('invoice_exclusivity')->options($sel_exclusivity,
+					$invoice->exclusivity_cf)->label(trans('texts.sel_exclusivity')) !!}
+				</td>
+			</tr>
+
+			<tr>
+				<td class="hide-border" colspan="2">&nbsp;</td>
+				<td colspan="3">
+					{!! Former::select('invoice_utilization')->options($sel_utilization,
+					$invoice->duration_cf)->label(trans('texts.sel_utilization')) !!}
+				</td>
+			</tr>
+
+			<tr>
+				<td class="hide-border" colspan="2">&nbsp;</td>
+				<td colspan="3">
+					{!! Former::select('invoice_duration')->options($sel_duration,
+					$invoice->duration_cf)->label(trans('texts.sel_duration')) !!}
+				</td>
+			</tr>
+
+			<tr>
+				<td class="hide-border" colspan="3">&nbsp;</td>
+				<td class="hide-border" colspan="3">
+					{!! Former::select('invoice_scope_visibility')->options($sel_scope_visibility,
+					$invoice->scope_visibility_cf)->label(trans('texts.sel_scope_visibility')) !!}
+				</td>
+			</tr>
+
+			<tr>
+				<td class="hide-border" colspan="3">&nbsp;</td>
+				<td class="hide-border" colspan="2">{{ trans('texts.copyright_amount') }}: </td>
+				<td class="hide-border" colspan="1">
+					<p class="copyright-amount">{{ trans('texts.copyright_included') }}</p>
+				</td>
+			</tr>
+
+			{{-- COPYRIGHT AREA ENDS --}}
+
 			<tr data-bind="style: { 'font-weight': partial() ? 'normal' : 'bold', 'font-size': partial() ? '1em' : '1.05em' }">
 				<td class="hide-border" colspan="3">&nbsp;</td>
 				<td class="hide-border" style="display:none" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>
@@ -546,149 +601,6 @@
 				<td class="hide-border" data-bind="css: {'hide-border': !partial()}" style="text-align: right"><span data-bind="text: totals.total"></span></td>
 			</tr>
 
-			{{-- COPYRIGHT AREA HERE --}}
-
-			<tr>
-				<td colspan="3">&nbsp;</td>
-				<td class="hide-border" colspan="4">
-					<label for="copyrightIncluded" style="font-weight:normal;">
-						<input type="checkbox" id="copyrightIncluded" name="copyright_included">
-						{{ trans('texts.is_copyright_included') }}
-					</label>
-				</td>
-			</tr>
-
-			<tr>
-				<td colspan="3">&nbsp;</td>
-				<td class="hide-border" colspan="4">
-					<label for="invoiceExclusivity" style="font-weight:normal;">{{ trans('texts.sel_exclusivity') }}</label>
-					<select name="invoice_exclusivity" id="invoiceExclusivity">
-						<option value="0">{{ trans('texts.no') }}</option>
-						<option value="1">{{ trans('texts.yes') }}</option>
-					</select>
-				</td>
-			</tr>
-
-			<tr>
-				<td colspan="3">&nbsp;</td>
-				<td class="hide-border" colspan="4">
-					<label for="invoiceUtilization" style="font-weight:normal;">{{ trans('texts.sel_utilization') }}</label>
-					<select name="invoice_utilization" id="invoiceUtilization">
-						<option value="0.1">{{ trans('texts.ut_local') }}</option>
-						<option value="0.2">{{ trans('texts.ut_national') }}</option>
-						<option value="1">{{ trans('texts.ut_european') }}</option>
-						<option value="2">{{ trans('texts.ut_world') }}</option>
-					</select>
-				</td>
-			</tr>
-
-			<tr>
-				<td colspan="3">&nbsp;</td>
-				<td class="hide-border" colspan="4">
-					<label for="invoiceDuration" style="font-weight:normal;">{{ trans('texts.sel_duration') }}</label>
-					<select name="invoice_utilization" id="invoiceDuration">
-						<option value="0.01">
-							{{ trans_choice('texts.du_period', 1,
-							['period' => mb_strtolower(str_plural(trans('texts.du_day'), 1))]) }}
-						</option>
-						<option value="0.02">
-							{{ trans_choice('texts.du_period', 1,
-							['period' => mb_strtolower(str_plural(trans('texts.du_week'), 1))]) }}
-						</option>
-						<option value="0.03">
-							{{ trans_choice('texts.du_period', 1,
-							['period' => mb_strtolower(str_plural(trans('texts.du_month'), 1))]) }}
-						</option>
-						<option value="0.05">
-							{{ trans_choice('texts.du_period', 3,
-							['period' => mb_strtolower(str_plural(trans('texts.du_month'), 3))]) }}
-						</option>
-						<option value="0.08">
-							{{ trans_choice('texts.du_period', 6,
-							['period' => mb_strtolower(str_plural(trans('texts.du_month'), 6))]) }}
-						</option>
-						<option value="0.1">
-							{{ trans_choice('texts.du_period', 1,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 1))]) }}
-						</option>
-						<option value="0.15">
-							{{ trans_choice('texts.du_period', 2,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 2))]) }}
-						</option>
-						<option value="0.2">
-							{{ trans_choice('texts.du_period', 3,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 3))]) }}
-						</option>
-						<option value="0.25">
-							{{ trans_choice('texts.du_period', 4,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 4))]) }}
-						</option>
-						<option value="0.3">
-							{{ trans_choice('texts.du_period', 5,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 5))]) }}
-						</option>
-						<option value="0.35">
-							{{ trans_choice('texts.du_period', 6,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 6))]) }}
-						</option>
-						<option value="0.4">
-							{{ trans_choice('texts.du_period', 7,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 7))]) }}
-						</option>
-						<option value="0.45">
-							{{ trans_choice('texts.du_period', 8,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 8))]) }}
-						</option>
-						<option value="0.5">
-							{{ trans_choice('texts.du_period', 10,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 10))]) }}
-						</option>
-						<option value="0.6">
-							{{ trans_choice('texts.du_period', 15,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 15))]) }}
-						</option>
-						<option value="0.7">
-							{{ trans_choice('texts.du_period', 20,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 20))]) }}
-						</option>
-						<option value="0.8">
-							{{ trans_choice('texts.du_period', 30,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 30))]) }}
-						</option>
-						<option value="0.9">
-							{{ trans_choice('texts.du_period', 40,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 40))]) }}
-						</option>
-						<option value="0.9">
-							{{ trans_choice('texts.du_period', 40,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 40))]) }}
-						</option>
-						<option value="1">
-							{{ trans_choice('texts.du_period', 50,
-							['period' => mb_strtolower(str_plural(trans('texts.du_year'), 50))]) }}
-						</option>
-						<option value="2">
-							{{ trans('texts.du_period_legal') }}
-						</option>
-					</select>
-				</td>
-			</tr>
-
-			<tr>
-				<td colspan="3">&nbsp;</td>
-				<td class="hide-border" colspan="4">
-					<label for="invoiceUtilization" style="font-weight:normal;">{{ trans('texts.sel_scope_visibility') }}</label>
-					<select name="invoice_utilization" id="invoiceUtilization">
-						<option value="0.1">{{ trans('texts.sc_low') }}</option>
-						<option value="0.2">{{ trans('texts.sc_med') }}</option>
-						<option value="0.5">{{ trans('texts.sc_high') }}</option>
-						<option value="1">{{ trans('texts.sc_very_high') }}</option>
-					</select>
-				</td>
-			</tr>
-
-			{{-- COPYRIGHT AREA ENDS --}}
-			
 			<tr style="font-size:1.05em; display:none; font-weight:bold" data-bind="visible: partial">
 				<td class="hide-border" colspan="3">&nbsp;</td>
 				<td class="hide-border" style="display:none" data-bind="visible: $root.invoice_item_taxes.show">&nbsp;</td>

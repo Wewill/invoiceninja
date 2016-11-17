@@ -62033,6 +62033,11 @@ function calculateAmounts(invoice) {
     }
   }
 
+  if (invoice.copyright_included) {
+    total += total * (NINJA.parseFloat(invoice.exclusivity_cf) + NINJA.parseFloat(invoice.utilization_cf) +
+      NINJA.parseFloat(invoice.duration_cf) + NINJA.parseFloat(invoice.scope_visibility_cf));
+  }
+
   // custom fields w/o with taxes
   if (NINJA.parseFloat(invoice.custom_value1) && invoice.custom_taxes1 != '1') {
     total += roundToTwo(invoice.custom_value1);
@@ -62041,7 +62046,9 @@ function calculateAmounts(invoice) {
     total += roundToTwo(invoice.custom_value2);
   }
 
+
   invoice.total_amount = roundToTwo(roundToTwo(total) - (roundToTwo(invoice.amount) - roundToTwo(invoice.balance)));
+
   invoice.discount_amount = discount;
   invoice.tax_amount1 = taxAmount1;
   invoice.tax_amount2 = taxAmount2;

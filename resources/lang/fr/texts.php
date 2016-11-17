@@ -2165,6 +2165,7 @@ $LANG = array(
 
     'copyright_included' => 'Inclus',
     'is_copyright_included' => 'Cession de droit incluse?',
+    'copyright_amount' => 'Montant du droit d\'auteur',
 
     'ex_no' => 'Non exclusivité',
     'ex_yes' => 'Exclusivité',
@@ -2179,7 +2180,9 @@ $LANG = array(
     'du_day' => 'journée',
     'du_week' => 'semaine',
     'du_month' => 'mois',
+    'du_months' => 'mois',
     'du_year' => 'an',
+    'du_years' => 'ans',
 
     'sc_low' => 'Faible étendue',
     'sc_med' => 'Moyenne étendue',

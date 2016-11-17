@@ -509,6 +509,24 @@ class InvoiceRepository extends BaseRepository
 
         $invoice->amount = $total;
 
+	    if (!empty($data['copyright_included'])) {
+		    $invoice->copyright_included = 1;
+
+		    $invoice->exclusivity_cf = $data['invoice_exclusivity'];
+		    $invoice->utilization_cf = $data['invoice_utilization'];
+		    $invoice->duration_cf = $data['invoice_duration'];
+		    $invoice->scope_visibility_cf = $data['invoice_scope_visibility'];
+
+		    $invoice->amount += $invoice->amount * ($invoice->exclusivity_cf + $invoice->utilization_cf +
+		    $invoice->duration_cf + $invoice->scope_visibility_cf);
+	    } else {
+		    $invoice->copyright_included = 0;
+		    $invoice->exclusivity_cf = 0;
+			$invoice->utilization_cf = 0;
+			$invoice->duration_cf = 0;
+			$invoice->scope_visibility_cf = 0;
+	    }
+
         $invoice->save();
 
         if ($publicId) {
