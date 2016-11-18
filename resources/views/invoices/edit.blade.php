@@ -587,7 +587,7 @@
 			<tr>
 				<td class="hide-border" colspan="3">&nbsp;</td>
 				<td class="hide-border" colspan="2">{{ trans('texts.copyright_amount') }}: </td>
-				<td class="hide-border" colspan="2">
+				<td class="hide-border" colspan="1" style="text-align: right">
 					<span data-bind="text: copyright_amount"></span>
 				</td>
 			</tr>

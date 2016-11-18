@@ -201,7 +201,11 @@ trait PresentsInvoice
 	        'order_from',
 	        'reference',
 	        'title',
-	        'credit_note_number'
+	        'credit_note_number',
+	        'sel_exclusivity',
+	        'sel_utilization',
+	        'sel_duration',
+	        'sel_scope_visibility',
         ];
 
         foreach ($fields as $field) {

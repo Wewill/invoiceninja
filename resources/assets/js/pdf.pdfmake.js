@@ -342,10 +342,23 @@ NINJA.copyrightCustom = function (invoice) {
 
   data.push([
     {text: 'Cession de droits d\'auteur', style: ['copyrightHeader', 'copyrightLabel']},
-    {text: '>$invoiceCopyrightIsInclude', style: ['copyrightHeader', 'copyrightValue']}
+    {text: invoice.copyright_amount ? invoice.copyright_amount : invoiceLabels.copyright_included, style: ['copyrightHeader', 'copyrightValue']}
   ]);
+  var copyright_includes = [];
+
+  if (roundToTwo(NINJA.parseFloat(invoice.exclusivity_cf)) > 0)
+    copyright_includes.push(invoiceLabels.sel_exclusivity);
+  if (roundToTwo(NINJA.parseFloat(invoice.utilization_cf)) > 0)
+    copyright_includes.push(invoiceLabels.sel_utilization);
+  if (roundToTwo(NINJA.parseFloat(invoice.duration_cf)) > 0)
+    copyright_includes.push(invoiceLabels.sel_duration);
+  if (roundToTwo(NINJA.parseFloat(invoice.scope_visibility_cf)) > 0)
+    copyright_includes.push(invoiceLabels.sel_scope_visibility);
+
   data.push([
-    {text: 'Autorisation d\'utilisation et de représentation donnée pour : ' + '>$invoiceCopyright', colSpan: 2},
+    {text: 'Autorisation d\'utilisation et de représentation donnée pour : ' +
+    copyright_includes.length ? copyright_includes.join(', ') : ' — ',
+      colSpan: 2},
     {text: ' '}
   ]);
 
