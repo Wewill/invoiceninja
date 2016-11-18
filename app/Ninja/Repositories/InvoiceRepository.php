@@ -517,8 +517,11 @@ class InvoiceRepository extends BaseRepository
 		    $invoice->duration_cf = $data['invoice_duration'];
 		    $invoice->scope_visibility_cf = $data['invoice_scope_visibility'];
 
-		    $invoice->amount += $invoice->amount * ($invoice->exclusivity_cf + $invoice->utilization_cf +
-		    $invoice->duration_cf + $invoice->scope_visibility_cf);
+		    $copyright_cfs = ($invoice->exclusivity_cf + $invoice->utilization_cf +
+			    $invoice->duration_cf + $invoice->scope_visibility_cf);
+
+		    $invoice->amount += $invoice->amount * $copyright_cfs;
+		    $invoice->balance += $invoice->balance * $copyright_cfs;
 	    } else {
 		    $invoice->copyright_included = 0;
 		    $invoice->exclusivity_cf = 0;

@@ -61997,6 +61997,14 @@ function calculateAmounts(invoice) {
 
   invoice.subtotal_amount = total;
 
+  if (invoice.copyright_included) {
+    invoice.copyright_amount = total * (NINJA.parseFloat(invoice.exclusivity_cf) + NINJA.parseFloat(invoice.utilization_cf) +
+      NINJA.parseFloat(invoice.duration_cf) + NINJA.parseFloat(invoice.scope_visibility_cf));
+
+    total += invoice.copyright_amount;
+    invoice.copyright_amount = invoice.formatMoney(invoice.copyright_amount);
+  }
+
   var discount = 0;
   if (invoice.discount != 0) {
     if (parseInt(invoice.is_amount_discount)) {
@@ -62031,11 +62039,6 @@ function calculateAmounts(invoice) {
     if (taxes.hasOwnProperty(key)) {
         total += taxes[key].amount;
     }
-  }
-
-  if (invoice.copyright_included) {
-    total += total * (NINJA.parseFloat(invoice.exclusivity_cf) + NINJA.parseFloat(invoice.utilization_cf) +
-      NINJA.parseFloat(invoice.duration_cf) + NINJA.parseFloat(invoice.scope_visibility_cf));
   }
 
   // custom fields w/o with taxes

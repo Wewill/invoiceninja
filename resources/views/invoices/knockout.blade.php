@@ -241,11 +241,13 @@ function InvoiceModel(data) {
     self.custom_text_value1 = ko.observable();
     self.custom_text_value2 = ko.observable();
 
+	self.copyright_amount = ko.observable();
     self.copyright_included = ko.observable();
     self.exclusivity_cf = ko.observable();
     self.utilization_cf = ko.observable();
     self.duration_cf = ko.observable();
     self.scope_visibility_cf = ko.observable();
+
 
     self.mapping = {
         'client': {
@@ -563,8 +565,15 @@ function InvoiceModel(data) {
         total = NINJA.parseFloat(total) + taxAmount1 + taxAmount2;
 
 	    if (self.copyright_included()) {
-		    total += total * (NINJA.parseFloat(self.exclusivity_cf()) + NINJA.parseFloat(self.utilization_cf()) +
-			    NINJA.parseFloat(self.duration_cf()) + NINJA.parseFloat(self.scope_visibility_cf()));
+		    var copyright_amount = total * (NINJA.parseFloat(self.exclusivity_cf()) +
+			    NINJA.parseFloat(self.utilization_cf()) + NINJA.parseFloat(self.duration_cf()) +
+			    NINJA.parseFloat(self.scope_visibility_cf()));
+
+		    total += copyright_amount;
+		    self.copyright_amount(self.formatMoney(copyright_amount));
+
+	    } else {
+		    self.copyright_amount('{{ trans('texts.copyright_included') }}');
 	    }
 
         total = roundToTwo(total);

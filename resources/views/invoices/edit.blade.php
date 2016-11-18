@@ -556,7 +556,7 @@
 				<td class="hide-border" colspan="2">&nbsp;</td>
 				<td colspan="3">
 					{!! Former::select('invoice_exclusivity')->options($sel_exclusivity,
-					$invoice->exclusivity_cf)->label(trans('texts.sel_exclusivity')) !!}
+					$invoice->exclusivity_cf)->label(trans('texts.sel_exclusivity'))->data_bind("value: exclusivity_cf") !!}
 				</td>
 			</tr>
 
@@ -564,7 +564,7 @@
 				<td class="hide-border" colspan="2">&nbsp;</td>
 				<td colspan="3">
 					{!! Former::select('invoice_utilization')->options($sel_utilization,
-					$invoice->duration_cf)->label(trans('texts.sel_utilization')) !!}
+					$invoice->utilization_cf)->label(trans('texts.sel_utilization'))->data_bind("value: utilization_cf")!!}
 				</td>
 			</tr>
 
@@ -572,7 +572,7 @@
 				<td class="hide-border" colspan="2">&nbsp;</td>
 				<td colspan="3">
 					{!! Former::select('invoice_duration')->options($sel_duration,
-					$invoice->duration_cf)->label(trans('texts.sel_duration')) !!}
+					$invoice->duration_cf)->label(trans('texts.sel_duration'))->data_bind("value: duration_cf") !!}
 				</td>
 			</tr>
 
@@ -580,15 +580,15 @@
 				<td class="hide-border" colspan="3">&nbsp;</td>
 				<td class="hide-border" colspan="3">
 					{!! Former::select('invoice_scope_visibility')->options($sel_scope_visibility,
-					$invoice->scope_visibility_cf)->label(trans('texts.sel_scope_visibility')) !!}
+					$invoice->scope_visibility_cf)->label(trans('texts.sel_scope_visibility'))->data_bind("value: scope_visibility_cf") !!}
 				</td>
 			</tr>
 
 			<tr>
 				<td class="hide-border" colspan="3">&nbsp;</td>
 				<td class="hide-border" colspan="2">{{ trans('texts.copyright_amount') }}: </td>
-				<td class="hide-border" colspan="1">
-					<p class="copyright-amount">{{ trans('texts.copyright_included') }}</p>
+				<td class="hide-border" colspan="2">
+					<span data-bind="text: copyright_amount"></span>
 				</td>
 			</tr>
 
