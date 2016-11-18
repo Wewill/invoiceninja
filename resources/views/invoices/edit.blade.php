@@ -569,7 +569,7 @@
 			</tr>
 
 			<tr>
-				<td class="hide-border" colspan="2">&nbsp;</td>
+				<td class="hide-border" colspan="3">&nbsp;</td>
 				<td colspan="3">
 					{!! Former::select('invoice_duration')->options($sel_duration,
 					$invoice->duration_cf)->label(trans('texts.sel_duration'))->data_bind("value: duration_cf") !!}
