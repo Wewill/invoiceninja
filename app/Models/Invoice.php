@@ -55,6 +55,10 @@ class Invoice extends EntityModel implements BalanceAffecting
         'has_expenses' => 'boolean',
     ];
 
+	protected $appends = [
+		'quote_number'
+	];
+
     // used for custom invoice numbers
     /**
      * @var array
@@ -96,6 +100,14 @@ class Invoice extends EntityModel implements BalanceAffecting
      * @var string
      */
     public static $fieldTerms = 'terms';
+
+	/**
+	 * @return string|null
+	 */
+	public function getQuoteNumberAttribute()
+	{
+		return self::find($this->quote_id)->invoice_number ?? null;
+	}
 
     /**
      * @return array

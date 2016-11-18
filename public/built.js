@@ -63630,12 +63630,10 @@ NINJA.renderInvoiceFieldCustom = function (invoice, field) {
       {text: invoice.po_number, style: ['invoicePoNumber']}
     ];
   } else if (field == 'invoice.quote_id') {
-    if (invoice.quote_id) {
-      return [
-        {text: 'Référence du devis :', style: ['invoiceQuoteIdLabel']},
-        {text: '>$invoice.quote_id', style: ['invoiceQuoteId']}
-      ];
-    }
+    return [
+      {text: 'Référence du devis :', style: ['invoiceQuoteIdLabel']},
+      {text: '' + invoice.quote_number, style: ['invoiceQuoteId']}
+    ];
   } else if (field == 'invoice.invoice_date') {
     return [
       {text: (invoice.is_quote ? invoiceLabels.quote_date : invoiceLabels.invoice_date) + ' :'},
@@ -63719,6 +63717,10 @@ NINJA.invoiceDetails = function (invoice) {
     fields.splice(0, 0, 'invoice.credit_note_number');
   }
 
+  if (invoice.quote_id) {
+    fields.splice(4, 0, 'invoice.quote_id');
+  }
+
   var data = [];
 
   for (var i = 0; i < fields.length; i++) {
@@ -63744,7 +63746,6 @@ NINJA.invoiceDetailsCustom = function (invoice) {
     'invoice.blank', // ADD
     'invoice.custom_text_value1',
     'invoice.custom_text_value2',
-    'invoice.quote_id',
     'invoice.po_number',
     'invoice.invoice_date',
     'invoice.due_date',
@@ -63756,6 +63757,10 @@ NINJA.invoiceDetailsCustom = function (invoice) {
 
   if (invoice.save_deleted) {
     fields.splice(0, 0, 'invoice.credit_note_number');
+  }
+
+  if (invoice.quote_id) {
+    fields.splice(4, 0, 'invoice.quote_id');
   }
   //}
   var data = [];
