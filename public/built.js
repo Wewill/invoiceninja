@@ -62473,7 +62473,6 @@ NINJA.TEMPLATES = {
 var ADDITIONAL_PAGES_COUNT = 2;
 
 function GetPdfMake(invoice, javascript, callback) {
-
   javascript = NINJA.decodeJavascript(invoice, javascript);
 
   function jsonCallBack(key, val) {
@@ -62799,20 +62798,21 @@ NINJA.copyrightCustom = function (invoice) {
     {text: 'Cession de droits d\'auteur', style: ['copyrightHeader', 'copyrightLabel']},
     {text: invoice.copyright_amount ? invoice.copyright_amount : invoiceLabels.copyright_included, style: ['copyrightHeader', 'copyrightValue']}
   ]);
+
   var copyright_includes = [];
 
-  if (roundToTwo(NINJA.parseFloat(invoice.exclusivity_cf)) > 0)
+  if (invoice.copyright_included && (roundToTwo(NINJA.parseFloat(invoice.exclusivity_cf)) > 0))
     copyright_includes.push(invoiceLabels.sel_exclusivity);
-  if (roundToTwo(NINJA.parseFloat(invoice.utilization_cf)) > 0)
+  if (invoice.copyright_included && (roundToTwo(NINJA.parseFloat(invoice.utilization_cf)) > 0))
     copyright_includes.push(invoiceLabels.sel_utilization);
-  if (roundToTwo(NINJA.parseFloat(invoice.duration_cf)) > 0)
+  if (invoice.copyright_included && (roundToTwo(NINJA.parseFloat(invoice.duration_cf)) > 0))
     copyright_includes.push(invoiceLabels.sel_duration);
-  if (roundToTwo(NINJA.parseFloat(invoice.scope_visibility_cf)) > 0)
+  if (invoice.copyright_included && (roundToTwo(NINJA.parseFloat(invoice.scope_visibility_cf)) > 0))
     copyright_includes.push(invoiceLabels.sel_scope_visibility);
 
   data.push([
-    {text: 'Autorisation d\'utilisation et de représentation donnée pour : ' +
-    copyright_includes.length ? copyright_includes.join(', ') : ' — ',
+    {text: 'Autorisation d\'utilisation et de représentation donnée pour: ' +
+    (copyright_includes.length ? copyright_includes.join(', ') : '—'),
       colSpan: 2},
     {text: ' '}
   ]);
@@ -63732,7 +63732,7 @@ NINJA.invoiceDetails = function (invoice) {
   }
 
   return NINJA.prepareDataPairs(data, 'invoiceDetails');
-}
+};
 
 // ------ ADD WIL 
 NINJA.invoiceDetailsCustom = function (invoice) {
@@ -63910,15 +63910,15 @@ NINJA.clientDetails = function (invoice) {
   }
 
   return NINJA.prepareDataList(data, 'clientDetails');
-}
+};
 
 NINJA.getPrimaryColor = function (defaultColor) {
   return NINJA.primaryColor ? NINJA.primaryColor : defaultColor;
-}
+};
 
 NINJA.getSecondaryColor = function (defaultColor) {
   return NINJA.primaryColor ? NINJA.secondaryColor : defaultColor;
-}
+};
 
 // remove blanks and add section style to all elements
 NINJA.prepareDataList = function (oldData, section) {
@@ -63930,7 +63930,7 @@ NINJA.prepareDataList = function (oldData, section) {
     }
   }
   return newData;
-}
+};
 
 NINJA.prepareDataTable = function (oldData, section) {
   var newData = [];
@@ -63948,7 +63948,7 @@ NINJA.prepareDataTable = function (oldData, section) {
     }
   }
   return newData;
-}
+};
 
 NINJA.prepareDataPairs = function (oldData, section) {
   var newData = [];
@@ -63969,7 +63969,7 @@ NINJA.prepareDataPairs = function (oldData, section) {
     }
   }
   return newData;
-}
+};
 
 NINJA.processItem = function (item, section) {
   if (item.style && item.style instanceof Array) {
@@ -63978,7 +63978,7 @@ NINJA.processItem = function (item, section) {
     item.style = [section];
   }
   return item;
-}
+};
 
 
 NINJA.parseMarkdownText = function (val, groupText) {
@@ -63996,12 +63996,12 @@ NINJA.parseMarkdownText = function (val, groupText) {
     var rule = rules[i];
     var formatter = function (data) {
       return $.extend(data, rule[1]);
-    }
+    };
     parts = NINJA.parseRegExp(parts, rule[0], formatter, true);
   }
 
   return parts.length > 1 ? parts : val;
-}
+};
 
 /*
  NINJA.parseMarkdownStack = function(val)
@@ -64036,7 +64036,7 @@ NINJA.parseRegExp = function (val, regExpStr, formatter, groupText) {
   }
 
   return parts.length > 1 ? parts : val;
-}
+};
 
 NINJA.parseRegExpLine = function (line, regExp, formatter, groupText) {
   var parts = [];
@@ -64061,6 +64061,6 @@ NINJA.parseRegExpLine = function (line, regExp, formatter, groupText) {
   }
 
   return line;
-}
+};
 
 //# sourceMappingURL=built.js.map
