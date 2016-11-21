@@ -680,8 +680,13 @@ class InvoiceRepository extends BaseRepository
         $invoice->load('invitations', 'invoice_items');
         $account = $invoice->account;
 
-        $clone = Invoice::createNew($invoice);
-        $clone->balance = $invoice->amount;
+	    $clone = $invoice->replicate();
+	    $clone->public_id = Invoice::withTrashed()->max('public_id') + 1;
+
+	    if ($partial) {
+		    $clone->amount *= 0.3;
+		    $clone->balance *= 0.3;
+	    }
 
         // if the invoice prefix is diff than quote prefix, use the same number for the invoice (if it's available)
         $invoiceNumber = false;
@@ -701,39 +706,6 @@ class InvoiceRepository extends BaseRepository
         $clone->invoice_number = $invoiceNumber ?: $account->getNextInvoiceNumber($clone);
         $clone->invoice_date = date_create()->format('Y-m-d');
 
-        foreach ([
-          'client_id',
-          'discount',
-          'is_amount_discount',
-          'po_number',
-          'is_recurring',
-          'frequency_id',
-          'start_date',
-          'end_date',
-          'terms',
-          'invoice_footer',
-          'public_notes',
-          'invoice_design_id',
-          'tax_name1',
-          'tax_rate1',
-          'tax_name2',
-          'tax_rate2',
-          'amount',
-          'invoice_type_id',
-          'custom_value1',
-          'custom_value2',
-          'custom_taxes1',
-          'custom_taxes2',
-          'partial',
-          'custom_text_value1',
-          'custom_text_value2', ] as $field) {
-	        if ($partial && $field == 'partial') {
-		        $clone->$field = $invoice->amount * 0.3;
-	        } else {
-		        $clone->$field = $invoice->$field;
-	        }
-        }
-
         if ($quotePublicId) {
             $clone->invoice_type_id = INVOICE_TYPE_STANDARD;
             $clone->quote_id = $quotePublicId;
@@ -747,23 +719,10 @@ class InvoiceRepository extends BaseRepository
         }
 
         foreach ($invoice->invoice_items as $item) {
-            $cloneItem = InvoiceItem::createNew($invoice);
+	        $cloneItem = $item->replicate();
+	        $cloneItem->public_id = InvoiceItem::withTrashed()->max('public_id') + 1;
 
-            foreach ([
-                'product_id',
-                'product_key',
-                'notes',
-                'cost',
-                'qty',
-                'tax_name1',
-                'tax_rate1',
-                'tax_name2',
-                'tax_rate2',
-            ] as $field) {
-                $cloneItem->$field = $item->$field;
-            }
-
-            $clone->invoice_items()->save($cloneItem);
+	        $clone->invoice_items()->save($cloneItem);
         }
 
         foreach ($invoice->documents as $document) {

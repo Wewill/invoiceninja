@@ -62801,13 +62801,24 @@ NINJA.copyrightCustom = function (invoice) {
 
   var copyright_includes = [];
 
-  if (invoice.copyright_included && (roundToTwo(NINJA.parseFloat(invoice.exclusivity_cf)) > 0))
+  if (invoice.copyright_included)
+    copyright_includes.push(invoiceLabels.sel_exclusivity + " ("+invoice.exclusivity_cf+")");
+  else
     copyright_includes.push(invoiceLabels.sel_exclusivity);
-  if (invoice.copyright_included && (roundToTwo(NINJA.parseFloat(invoice.utilization_cf)) > 0))
+
+  if (invoice.copyright_included)
+    copyright_includes.push(invoiceLabels.sel_utilization + " ("+invoice.utilization_cf+")");
+  else
     copyright_includes.push(invoiceLabels.sel_utilization);
-  if (invoice.copyright_included && (roundToTwo(NINJA.parseFloat(invoice.duration_cf)) > 0))
+
+  if (invoice.copyright_included)
+    copyright_includes.push(invoiceLabels.sel_duration + " ("+invoice.duration_cf+")");
+  else
     copyright_includes.push(invoiceLabels.sel_duration);
-  if (invoice.copyright_included && (roundToTwo(NINJA.parseFloat(invoice.scope_visibility_cf)) > 0))
+
+  if (invoice.copyright_included)
+    copyright_includes.push(invoiceLabels.sel_scope_visibility + " ("+invoice.scope_visibility_cf+")");
+  else
     copyright_includes.push(invoiceLabels.sel_scope_visibility);
 
   data.push([
