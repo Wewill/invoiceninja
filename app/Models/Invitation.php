@@ -18,6 +18,14 @@ class Invitation extends EntityModel
     /**
      * @return mixed
      */
+    public function getEntityType()
+    {
+        return ENTITY_INVITATION;
+    }
+
+    /**
+     * @return mixed
+     */
     public function invoice()
     {
         return $this->belongsTo('App\Models\Invoice')->withTrashed();
@@ -125,5 +133,14 @@ class Invitation extends EntityModel
 
         $invoice->markViewed();
         $client->markLoggedIn();
+    }
+
+    public function signatureDiv()
+    {
+        if ( ! $this->signature_base64) {
+            return false;
+        }
+
+        return sprintf('<img src="data:image/svg+xml;base64,%s"></img><p/>%s: %s', $this->signature_base64, trans('texts.signed'), Utils::fromSqlDateTime($this->signature_date));
     }
 }

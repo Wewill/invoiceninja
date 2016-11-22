@@ -15,16 +15,11 @@ class DuplicateSubmissionCheck
      */
     public function handle(Request $request, Closure $next)
     {
-
-        if ($request->is('api/v1/*')) {
+        if ($request->is('api/v1/*') || $request->is('documents')) {
             return $next($request);
         }
 
         $path = $request->path();
-
-        if (strpos($path, 'charts_and_reports') !== false) {
-            return $next($request);
-        }
 
         if (in_array($request->method(), ['POST', 'PUT', 'DELETE'])) {
             $lastPage = session(SESSION_LAST_REQUEST_PAGE);

@@ -57,6 +57,21 @@ class PaymentService extends BaseService
             return false;
         }
 
+        if ($credits = $client->credits->sum('balance')) {
+            $balance = $invoice->balance;
+            $amount = min($credits, $balance);
+            $data = [
+                'payment_type_id' => PAYMENT_TYPE_CREDIT,
+                'invoice_id' => $invoice->id,
+                'client_id' => $client->id,
+                'amount' => $amount,
+            ];
+            $payment = $this->paymentRepo->save($data);
+            if ($amount == $balance) {
+                return $payment;
+            }
+        }
+
         $paymentDriver = $account->paymentDriver($invitation, GATEWAY_TYPE_TOKEN);
 
         if ( ! $paymentDriver) {
@@ -134,10 +149,11 @@ class PaymentService extends BaseService
             foreach ($payments as $payment) {
                 if (Auth::user()->can('edit', $payment)) {
                     $amount = !empty($params['amount']) ? floatval($params['amount']) : null;
-                    $accountGateway = $payment->account_gateway;
-                    $paymentDriver = $accountGateway->paymentDriver();
-                    if ($paymentDriver->refundPayment($payment, $amount)) {
-                        $successful++;
+                    if ($accountGateway = $payment->account_gateway) {
+                        $paymentDriver = $accountGateway->paymentDriver();
+                        if ($paymentDriver->refundPayment($payment, $amount)) {
+                            $successful++;
+                        }
                     }
                 }
             }

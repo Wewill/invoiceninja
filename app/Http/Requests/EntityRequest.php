@@ -2,6 +2,7 @@
 
 use Input;
 use Utils;
+use App\Libraries\HistoryUtils;
 
 class EntityRequest extends Request {
 
@@ -35,19 +36,27 @@ class EntityRequest extends Request {
 
         $class = Utils::getEntityClass($this->entityType);
 
-        if (method_exists($class, 'trashed')) {
-            $this->entity = $class::scope($publicId)->withTrashed()->firstOrFail();
-        } else {
-            $this->entity = $class::scope($publicId)->firstOrFail();
-        }
+            if (method_exists($class, 'trashed')) {
+                $this->entity = $class::scope($publicId)->withTrashed()->firstOrFail();
+            } else {
+                $this->entity = $class::scope($publicId)->firstOrFail();
+            }
 
         return $this->entity;
+    }
+
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
     }
 
     public function authorize()
     {
         if ($this->entity()) {
-            return $this->user()->can('view', $this->entity());
+            if ($this->user()->can('view', $this->entity())) {
+                HistoryUtils::trackViewed($this->entity());
+                return true;
+            }
         } else {
             return $this->user()->can('create', $this->entityType);
         }
@@ -57,4 +66,5 @@ class EntityRequest extends Request {
     {
         return [];
     }
+
 }

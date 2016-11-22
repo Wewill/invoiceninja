@@ -1,9 +1,9 @@
 @extends('master')
 
-@section('head')	
+@section('head')
 
-<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/> 
-<link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css"/>    
+<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('css/built.public.min.css') }}" rel="stylesheet" type="text/css"/>
 
 <style type="text/css">
     body {
@@ -13,12 +13,14 @@
     .modal-header {
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
+        background-color: #337ab7;
+        color: #FFF;
     }
     .modal-header h4 {
         margin:0;
     }
     .modal-header img {
-        float: left; 
+        float: left;
         margin-right: 20px;
     }
     .form-signin {
@@ -46,6 +48,25 @@
     .form-signin .form-control:focus {
         z-index: 2;
     }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        height: 40px;
+        padding: 9px 12px;
+        font-size: 16px;
+        line-height: 1.42857143;
+        color: #000 !important;
+        background: #f9f9f9 !important;
+        background-image: none;
+        border: 1px solid #dfe0e1;
+        border-radius: 2px;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+
 </style>
 
 @stop
@@ -55,7 +76,7 @@
 
   {!! Former::open('/password/reset')->addClass('form-signin')->rules(array(
         'password' => 'required',
-        'password_confirmation' => 'required',        
+        'password_confirmation' => 'required',
   )) !!}
 
   <div class="modal-header">
@@ -66,8 +87,8 @@
       <input type="hidden" name="token" value="{{{ $token }}}">
 
       <p>
-        {!! Former::text('email')->placeholder(trans('texts.email'))->raw() !!}               
-        {!! Former::password('password')->placeholder(trans('texts.password'))->raw() !!}               
+        {!! Former::text('email')->placeholder(trans('texts.email'))->raw() !!}
+        {!! Former::password('password')->placeholder(trans('texts.password'))->raw() !!}
         {!! Former::password('password_confirmation')->placeholder(trans('texts.confirm_password'))->raw() !!}
 
     </p>
@@ -104,7 +125,7 @@
 
 <script type="text/javascript">
     $(function() {
-        $('#email').focus();            
+        $('#email').focus();
     })
 </script>
 

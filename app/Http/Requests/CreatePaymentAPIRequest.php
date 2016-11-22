@@ -23,8 +23,8 @@ class CreatePaymentAPIRequest extends PaymentRequest
     {
         if ( ! $this->invoice_id || ! $this->amount) {
             return [
-                'invoice_id' => 'required',
-                'amount' => 'required',
+                'invoice_id' => 'required|numeric|min:1',
+                'amount' => 'required|numeric|min:0.01',
             ];
         }
 
@@ -38,7 +38,7 @@ class CreatePaymentAPIRequest extends PaymentRequest
         ]);
 
         $rules = [
-            'amount' => "required|less_than:{$invoice->balance}|positive",
+            'amount' => "required|numeric|between:0.01,{$invoice->balance}",
         ];
 
         if ($this->payment_type_id == PAYMENT_TYPE_CREDIT) {

@@ -11,6 +11,7 @@ class EventServiceProvider extends ServiceProvider {
 	 * @var array
 	 */
 	protected $listen = [
+
         // Clients
         'App\Events\ClientWasCreated' => [
             'App\Listeners\ActivityListener@createdClient',
@@ -156,8 +157,39 @@ class EventServiceProvider extends ServiceProvider {
         'App\Events\TaskWasCreated' => [
             'App\Listeners\ActivityListener@createdTask',
         ],
-        'App\Events\TaskWasUpdated' => [
+		'App\Events\TaskWasUpdated' => [
             'App\Listeners\ActivityListener@updatedTask',
+        ],
+		'App\Events\TaskWasRestored' => [
+            'App\Listeners\ActivityListener@restoredTask',
+        ],
+		'App\Events\TaskWasArchived' => [
+            'App\Listeners\ActivityListener@archivedTask',
+        ],
+		'App\Events\TaskWasDeleted' => [
+            'App\Listeners\ActivityListener@deletedTask',
+        ],
+
+		// Expense events
+        'App\Events\ExpenseWasCreated' => [
+            'App\Listeners\ActivityListener@createdExpense',
+        ],
+		'App\Events\ExpenseWasUpdated' => [
+            'App\Listeners\ActivityListener@updatedExpense',
+        ],
+		'App\Events\ExpenseWasRestored' => [
+            'App\Listeners\ActivityListener@restoredExpense',
+        ],
+		'App\Events\ExpenseWasArchived' => [
+            'App\Listeners\ActivityListener@archivedExpense',
+        ],
+		'App\Events\ExpenseWasDeleted' => [
+            'App\Listeners\ActivityListener@deletedExpense',
+        ],
+
+        // Update events
+        \Codedge\Updater\Events\UpdateAvailable::class => [
+            \Codedge\Updater\Listeners\SendUpdateAvailableNotification::class
         ],
 	];
 

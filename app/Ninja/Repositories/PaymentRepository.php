@@ -150,9 +150,15 @@ class PaymentRepository extends BaseRepository
             // do nothing
         } elseif ($publicId) {
             $payment = Payment::scope($publicId)->firstOrFail();
-            \Log::warning('Entity not set in payment repo save');
+            if (Utils::isNinjaDev()) {
+                \Log::warning('Entity not set in payment repo save');
+            }
         } else {
             $payment = Payment::createNew();
+        }
+
+        if ($payment->is_deleted) {
+            return $payment;
         }
 
         $paymentTypeId = false;
@@ -180,12 +186,11 @@ class PaymentRepository extends BaseRepository
             if ($paymentTypeId == PAYMENT_TYPE_CREDIT) {
                 $credits = Credit::scope()->where('client_id', '=', $clientId)
                             ->where('balance', '>', 0)->orderBy('created_at')->get();
-                $applied = 0;
 
+                $remaining = $amount;
                 foreach ($credits as $credit) {
-                    $applied += $credit->apply($amount);
-
-                    if ($applied >= $amount) {
+                    $remaining -= $credit->apply($remaining);
+                    if ( ! $remaining) {
                         break;
                     }
                 }

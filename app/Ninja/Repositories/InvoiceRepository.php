@@ -50,6 +50,7 @@ class InvoiceRepository extends BaseRepository
             ->where('contacts.deleted_at', '=', null)
             ->where('invoices.is_recurring', '=', false)
             ->where('contacts.is_primary', '=', true)
+            //->whereRaw('(clients.name != "" or contacts.first_name != "" or contacts.last_name != "" or contacts.email != "")') // filter out buy now invoices
             ->select(
                 DB::raw('COALESCE(clients.currency_id, accounts.currency_id) currency_id'),
                 DB::raw('COALESCE(clients.country_id, accounts.country_id) country_id'),
@@ -262,6 +263,7 @@ class InvoiceRepository extends BaseRepository
 
         if ($invoice) {
             // do nothing
+            $entityType = $invoice->getEntityType();
         } elseif ($isNew) {
             $entityType = ENTITY_INVOICE;
             if (isset($data['is_recurring']) && filter_var($data['is_recurring'], FILTER_VALIDATE_BOOLEAN)) {
@@ -270,6 +272,7 @@ class InvoiceRepository extends BaseRepository
                 $entityType = ENTITY_QUOTE;
             }
             $invoice = $account->createInvoice($entityType, $data['client_id']);
+            $invoice->invoice_date = date_create()->format('Y-m-d');
             if (isset($data['has_tasks']) && filter_var($data['has_tasks'], FILTER_VALIDATE_BOOLEAN)) {
                 $invoice->has_tasks = true;
             }
@@ -278,7 +281,13 @@ class InvoiceRepository extends BaseRepository
             }
         } else {
             $invoice = Invoice::scope($publicId)->firstOrFail();
-            \Log::warning('Entity not set in invoice repo save');
+            if (Utils::isNinjaDev()) {
+                \Log::warning('Entity not set in invoice repo save');
+            }
+        }
+
+        if ($invoice->is_deleted) {
+            return $invoice;
         }
 
         $invoice->fill($data);
@@ -303,9 +312,6 @@ class InvoiceRepository extends BaseRepository
         }
         if (isset($data['is_amount_discount'])) {
             $invoice->is_amount_discount = $data['is_amount_discount'] ? true : false;
-        }
-        if (isset($data['partial'])) {
-            $invoice->partial = round(Utils::parseFloat($data['partial']), 2);
         }
         if (isset($data['invoice_date_sql'])) {
             $invoice->invoice_date = $data['invoice_date_sql'];
@@ -475,6 +481,10 @@ class InvoiceRepository extends BaseRepository
             $invoice->balance = $total;
         }
 
+        if (isset($data['partial'])) {
+            $invoice->partial = max(0,min(round(Utils::parseFloat($data['partial']), 2), $invoice->balance));
+        }
+
         $invoice->amount = $total;
         $invoice->save();
 
@@ -482,31 +492,33 @@ class InvoiceRepository extends BaseRepository
             $invoice->invoice_items()->forceDelete();
         }
 
-        $document_ids = !empty($data['document_ids'])?array_map('intval', $data['document_ids']):[];;
-        foreach ($document_ids as $document_id){
-            $document = Document::scope($document_id)->first();
-            if($document && Auth::user()->can('edit', $document)){
+        if ( ! empty($data['document_ids'])) {
+            $document_ids = array_map('intval', $data['document_ids']);
+            foreach ($document_ids as $document_id){
+                $document = Document::scope($document_id)->first();
+                if($document && Auth::user()->can('edit', $document)){
 
-                if($document->invoice_id && $document->invoice_id != $invoice->id){
-                    // From a clone
-                    $document = $document->cloneDocument();
-                    $document_ids[] = $document->public_id;// Don't remove this document
+                    if($document->invoice_id && $document->invoice_id != $invoice->id){
+                        // From a clone
+                        $document = $document->cloneDocument();
+                        $document_ids[] = $document->public_id;// Don't remove this document
+                    }
+
+                    $document->invoice_id = $invoice->id;
+                    $document->expense_id = null;
+                    $document->save();
                 }
-
-                $document->invoice_id = $invoice->id;
-                $document->expense_id = null;
-                $document->save();
             }
-        }
 
-        if ( ! $invoice->wasRecentlyCreated) {
-            foreach ($invoice->documents as $document){
-                if(!in_array($document->public_id, $document_ids)){
-                    // Removed
-                    // Not checking permissions; deleting a document is just editing the invoice
-                    if($document->invoice_id == $invoice->id){
-                        // Make sure the document isn't on a clone
-                        $document->delete();
+            if ( ! $invoice->wasRecentlyCreated) {
+                foreach ($invoice->documents as $document){
+                    if(!in_array($document->public_id, $document_ids)){
+                        // Removed
+                        // Not checking permissions; deleting a document is just editing the invoice
+                        if($document->invoice_id == $invoice->id){
+                            // Make sure the document isn't on a clone
+                            $document->delete();
+                        }
                     }
                 }
             }
@@ -539,7 +551,7 @@ class InvoiceRepository extends BaseRepository
             }
 
             if ($productKey = trim($item['product_key'])) {
-                if (\Auth::user()->account->update_products && ! strtotime($productKey) && ! $task && ! $expense) {
+                if (\Auth::user()->account->update_products && ! $invoice->has_tasks && ! $invoice->has_expenses) {
                     $product = Product::findProductByKey($productKey);
                     if (!$product) {
                         if (Auth::user()->can('create', ENTITY_PRODUCT)) {
@@ -649,6 +661,9 @@ class InvoiceRepository extends BaseRepository
         if ($quotePublicId) {
             $clone->invoice_type_id = INVOICE_TYPE_STANDARD;
             $clone->quote_id = $quotePublicId;
+            if ($account->invoice_terms) {
+                $clone->terms = $account->invoice_terms;
+            }
         }
 
         $clone->save();
@@ -680,7 +695,7 @@ class InvoiceRepository extends BaseRepository
 
         foreach ($invoice->documents as $document) {
             $cloneDocument = $document->cloneDocument();
-            $invoice->documents()->save($cloneDocument);
+            $clone->documents()->save($cloneDocument);
         }
 
         foreach ($invoice->invitations as $invitation) {
@@ -733,15 +748,21 @@ class InvoiceRepository extends BaseRepository
      * @param $clientId
      * @return mixed
      */
-    public function findOpenInvoices($clientId)
+    public function findOpenInvoices($clientId, $entityType = false)
     {
-        return Invoice::scope()
+        $query = Invoice::scope()
                 ->invoiceType(INVOICE_TYPE_STANDARD)
                 ->whereClientId($clientId)
                 ->whereIsRecurring(false)
-                ->whereDeletedAt(null)
-                ->whereHasTasks(true)
-                ->where('invoice_status_id', '<', 5)
+                ->whereDeletedAt(null);
+
+        if ($entityType == ENTITY_TASK) {
+            $query->whereHasTasks(true);
+        } elseif ($entityType == ENTITY_EXPENSE) {
+            $query->whereHasExpenses(true);
+        }
+
+        return $query->where('invoice_status_id', '<', 5)
                 ->select(['public_id', 'invoice_number'])
                 ->get();
     }

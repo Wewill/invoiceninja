@@ -48,8 +48,10 @@ class AccountGatewayController extends BaseController
         $accountGateway = AccountGateway::scope($publicId)->firstOrFail();
         $config = $accountGateway->getConfig();
 
-        foreach ($config as $field => $value) {
-            $config->$field = str_repeat('*', strlen($value));
+        if ($accountGateway->gateway_id != GATEWAY_CUSTOM) {
+            foreach ($config as $field => $value) {
+                $config->$field = str_repeat('*', strlen($value));
+            }
         }
 
         $data = self::getViewModel($accountGateway);
@@ -98,7 +100,7 @@ class AccountGatewayController extends BaseController
 
         if ($otherProviders) {
             $availableGatewaysIds = $account->availableGatewaysIds();
-            $data['primaryGateways'] = Gateway::primary($availableGatewaysIds)->orderBy('name', 'desc')->get();
+            $data['primaryGateways'] = Gateway::primary($availableGatewaysIds)->orderBy('sort_order')->get();
             $data['secondaryGateways'] = Gateway::secondary($availableGatewaysIds)->orderBy('name')->get();
             $data['hiddenFields'] = Gateway::$hiddenFields;
 
@@ -130,7 +132,9 @@ class AccountGatewayController extends BaseController
 
         foreach ($gateways as $gateway) {
             $fields = $gateway->getFields();
-            asort($fields);
+            if ( ! $gateway->isCustom()) {
+                asort($fields);
+            }
             $gateway->fields = $gateway->id == GATEWAY_WEPAY ? [] : $fields;
             if ($accountGateway && $accountGateway->gateway_id == $gateway->id) {
                 $accountGateway->fields = $gateway->fields;
@@ -245,6 +249,8 @@ class AccountGatewayController extends BaseController
                     }
                     if (!$value && ($field == 'testMode' || $field == 'developerMode')) {
                         // do nothing
+                    } elseif ($gatewayId == GATEWAY_CUSTOM) {
+                        $config->$field = strip_tags($value);
                     } else {
                         $config->$field = $value;
                     }
@@ -307,18 +313,31 @@ class AccountGatewayController extends BaseController
                 $account->account_gateways()->save($accountGateway);
             }
 
-            if(isset($wepayResponse)) {
+            if (isset($wepayResponse)) {
                 return $wepayResponse;
             } else {
+                $this->testGateway($accountGateway);
+
                 if ($accountGatewayPublicId) {
                     $message = trans('texts.updated_gateway');
+                    Session::flash('message', $message);
+                    return Redirect::to("gateways/{$accountGateway->public_id}/edit");
                 } else {
                     $message = trans('texts.created_gateway');
+                    Session::flash('message', $message);
+                    return Redirect::to("/settings/online_payments");
                 }
-
-                Session::flash('message', $message);
-                return Redirect::to("gateways/{$accountGateway->public_id}/edit");
             }
+        }
+    }
+
+    private function testGateway($accountGateway)
+    {
+        $paymentDriver = $accountGateway->paymentDriver();
+        $result = $paymentDriver->isValid();
+
+        if ($result !== true) {
+            Session::flash('error', $result . ' - ' . trans('texts.gateway_config_error'));
         }
     }
 

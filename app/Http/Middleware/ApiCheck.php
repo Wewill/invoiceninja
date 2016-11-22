@@ -23,18 +23,22 @@ class ApiCheck {
     */
     public function handle($request, Closure $next)
     {
-        $loggingIn = $request->is('api/v1/login') || $request->is('api/v1/register');
+        $loggingIn = $request->is('api/v1/login')
+            || $request->is('api/v1/register')
+            || $request->is('api/v1/oauth_login');
         $headers = Utils::getApiHeaders();
+        $hasApiSecret = false;
 
         if ($secret = env(API_SECRET)) {
-            $hasApiSecret = hash_equals($request->api_secret ?: '', $secret);
+            $requestSecret = Request::header('X-Ninja-Secret') ?: ($request->api_secret ?: '');
+            $hasApiSecret = hash_equals($requestSecret, $secret);
         }
 
         if ($loggingIn) {
             // check API secret
             if ( ! $hasApiSecret) {
                 sleep(ERROR_DELAY);
-                return Response::json('Invalid secret', 403, $headers);
+                return Response::json('Invalid value for API_SECRET', 403, $headers);
             }
         } else {
             // check for a valid token
@@ -42,7 +46,7 @@ class ApiCheck {
 
             // check if user is archived
             if ($token && $token->user) {
-                Auth::loginUsingId($token->user_id);
+                Auth::onceUsingId($token->user_id);
                 Session::set('token_id', $token->id);
             } else {
                 sleep(ERROR_DELAY);

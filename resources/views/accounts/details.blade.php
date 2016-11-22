@@ -23,7 +23,6 @@
             ->autocomplete('on')
             ->rules([
                 'name' => 'required',
-                'website' => 'url',
             ]) !!}
 
 	{{ Former::populate($account) }}
@@ -148,9 +147,9 @@
         }
 
         function deleteLogo() {
-            if (confirm("{!! trans('texts.are_you_sure') !!}")) {
+            sweetConfirm(function() {
                 $('.removeLogoForm').submit();
-            }
+            });
         }
 
 	</script>

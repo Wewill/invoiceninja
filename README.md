@@ -1,15 +1,22 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/hillelcoren/invoice-ninja/master/public/images/round_logo.png" alt="Sublime's custom image"/>
+    <img src="https://raw.githubusercontent.com/hillelcoren/invoice-ninja/master/public/images/round_logo.png" alt="Sublime's custom image"/>
 </p>
 
 # Invoice Ninja
 
 [![Build Status](https://travis-ci.org/invoiceninja/invoiceninja.svg?branch=master)](https://travis-ci.org/invoiceninja/invoiceninja)
+[![Docs](https://readthedocs.org/projects/pip/badge/?version=latest)](http://docs.invoiceninja.com/en/latest/)
 [![Join the chat at https://gitter.im/hillelcoren/invoice-ninja](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hillelcoren/invoice-ninja?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-## [Hosted](https://www.invoiceninja.com) | [Self-hosted](https://invoiceninja.org)
+## [Hosted](https://www.invoiceninja.com) | [Self-hosted](https://www.invoiceninja.org)
 
-We're often asked to recommend Laravel/PHP developers to help setup our app and make small adjustments, email us at contact@invoiceninja.com if you're interested in taking on the work.
+**We're starting work on custom modules, join the discussion [here](https://github.com/invoiceninja/invoiceninja/issues/1131).**
+
+All Pro and Enterprise features from our hosted app are included in both the [self-host zip](https://www.invoiceninja.com/self-host/) and the GitHub repository.
+
+Our [iPhone app](https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=1072566815&mt=8) is now available, our Android app is up next...
+
+Watch our [video on YouTube](https://www.youtube.com/watch?v=xHGKvadapbA) to get a quick overview of the app.
 
 ## Affiliates Programs
 * Referral program (we pay you): $100 per signup paid over 3 years - [Learn more](https://www.invoiceninja.com/referral-program/)
@@ -27,15 +34,18 @@ We're often asked to recommend Laravel/PHP developers to help setup our app and 
 * MySQL
 
 ## Recommended Providers
+* [WePay](https://www.invoiceninja.com/wepay-accept-online-payments-instantly/)
 * [Stripe](https://stripe.com/)
 * [Postmark](https://postmarkapp.com/)
 
 ## Features
 * Built using Laravel 5.2
 * Live PDF generation using [pdfmake](http://pdfmake.org/)
-* Integrates with 50+ payment providers with [Omnipay](https://github.com/thephpleague/omnipay)
+* Supports 50+ payment gateways with [Omnipay](https://github.com/thephpleague/omnipay)
+* Integrate with hundreds of apps with [Zapier](https://zapier.com/zapbook/invoice-ninja/)
 * Recurring invoices with auto-billing
 * Expenses and vendors
+* Import bank statements with [OFX](http://www.ofxhome.com/)
 * Tasks with time-tracking
 * File Attachments
 * Multi-user/multi-company support
@@ -47,13 +57,15 @@ We're often asked to recommend Laravel/PHP developers to help setup our app and 
 * [D3.js](http://d3js.org/) visualizations
 
 ## Documentation
-* [Ubuntu and Apache](http://blog.technerdservices.com/index.php/2015/04/techpop-how-to-install-invoice-ninja-on-ubuntu-14-04/)
-* [Debian and Nginx](https://www.rosehosting.com/blog/install-invoice-ninja-on-a-debian-7-vps/)
-* [User Guide](https://www.invoiceninja.com/app-user-guide/)
+* [Self Host Guide](https://www.invoiceninja.com/self-host)
+* [User Guide](http://docs.invoiceninja.com/en/latest/)
 * [Developer Guide](https://www.invoiceninja.com/knowledgebase/developer-guide/)
-* [API Documentation](https://www.invoiceninja.com/api-documentation/)
 * [Support Forum](https://www.invoiceninja.com/forums/forum/support/)
 * [Feature Roadmap](https://trello.com/b/63BbiVVe/)
+
+## API
+* [API Documentation](https://www.invoiceninja.com/api-documentation/)
+* [PHP SDK](https://github.com/invoiceninja/sdk-php)
 
 ## Contributing
 All contributors are welcome!  
@@ -68,8 +80,8 @@ For information on how contribute to Invoice Ninja, please see our [contributing
 * [Jeramy Simpson](https://github.com/JeramyMywork) - [MyWork](https://www.mywork.com.au)
 * [Sigitas Limontas](https://lt.linkedin.com/in/sigitaslimontas)
 * [Joshua Dwire](https://github.com/joshuadwire) - [Some Techie](https://www.sometechie.com)
-* [Holger Lösken](https://github.com/codedge) - [codedge](http://codedge.de/)
-
+* [Holger Lösken](https://github.com/codedge) - [codedge](http://codedge.de)
+* [Samuel Laulhau](https://github.com/lalop) - [Lalop](http://lalop.co/)
 
 ## License
 Invoice Ninja is released under the Attribution Assurance License.  

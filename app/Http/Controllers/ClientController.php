@@ -89,15 +89,13 @@ class ClientController extends BaseController
     public function show(ClientRequest $request)
     {
         $client = $request->entity();
-
         $user = Auth::user();
-        Utils::trackViewed($client->getDisplayName(), ENTITY_CLIENT);
 
         $actionLinks = [];
         if($user->can('create', ENTITY_TASK)){
             $actionLinks[] = ['label' => trans('texts.new_task'), 'url' => URL::to('/tasks/create/'.$client->public_id)];
         }
-        if (Utils::hasFeature(FEATURE_QUOTES) && $user->can('create', ENTITY_INVOICE)) {
+        if (Utils::hasFeature(FEATURE_QUOTES) && $user->can('create', ENTITY_QUOTE)) {
             $actionLinks[] = ['label' => trans('texts.new_quote'), 'url' => URL::to('/quotes/create/'.$client->public_id)];
         }
 
@@ -223,10 +221,6 @@ class ClientController extends BaseController
         $message = Utils::pluralize($action.'d_client', $count);
         Session::flash('message', $message);
 
-        if ($action == 'restore' && $count == 1) {
-            return Redirect::to('clients/'.Utils::getFirst($ids));
-        } else {
-            return Redirect::to('clients');
-        }
+        return $this->returnBulk(ENTITY_CLIENT, $action, $ids);
     }
 }

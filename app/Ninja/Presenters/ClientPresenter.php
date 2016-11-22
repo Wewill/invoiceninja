@@ -8,21 +8,19 @@ class ClientPresenter extends EntityPresenter {
         return $this->entity->country ? $this->entity->country->name : '';
     }
 
-    public function status()
+    public function balance()
     {
-        $class = $text = '';
+        $client = $this->entity;
+        $account = $client->account;
 
-        if ($this->entity->is_deleted) {
-            $class = 'danger';
-            $text = trans('texts.deleted');
-        } elseif ($this->entity->trashed()) {
-            $class = 'warning';
-            $text = trans('texts.archived');
-        } else {
-            $class = 'success';
-            $text = trans('texts.active');
-        }
+        return $account->formatMoney($client->balance, $client);
+    }
 
-        return "<span class=\"label label-{$class}\">{$text}</span>";
+    public function paid_to_date()
+    {
+        $client = $this->entity;
+        $account = $client->account;
+
+        return $account->formatMoney($client->paid_to_date, $client);
     }
 }

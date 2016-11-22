@@ -21,6 +21,7 @@ class Kernel extends HttpKernel {
         'App\Http\Middleware\StartupCheck',
 	];
 
+
 	/**
 	 * The application's route middleware.
 	 *

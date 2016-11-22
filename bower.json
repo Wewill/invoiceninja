@@ -4,6 +4,7 @@
   "dependencies": {
     "jquery": "1.11.3",
     "bootstrap": "3.3.1",
+    "bootstrap-combobox": "1.1.5",
     "jquery-ui": "1.11.2",
     "datatables": "1.10.4",
     "datatables-bootstrap3": "*",
@@ -27,7 +28,11 @@
     "datetimepicker": "~2.4.5",
     "stacktrace-js": "~1.0.1",
     "fuse.js": "~2.0.2",
-    "dropzone": "~4.3.0"
+    "dropzone": "~4.3.0",
+    "nouislider": "~8.5.1",
+    "bootstrap-daterangepicker": "~2.1.24",
+    "sweetalert2": "^5.3.8",
+    "jSignature": "brinley/jSignature#^2.1.0"
   },
   "resolutions": {
     "jquery": "~1.11"

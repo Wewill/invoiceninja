@@ -38,7 +38,7 @@ class CheckBalanceCest
         $I->fillField(['name' => 'cost'], $productPrice);
         $I->click('Save');
         $I->wait(1);
-        $I->see($productKey);
+        //$I->see($productKey);
 
         // create invoice
         $I->amOnPage('/invoices/create');
@@ -77,6 +77,8 @@ class CheckBalanceCest
 
         // delete the invoice
         $I->amOnPage('/invoices/' . $invoiceId);
+        $I->executeJS('submitBulkAction("restore")');
+        $I->wait(2);
         $I->executeJS('submitBulkAction("delete")');
         $I->wait(1);
         $I->amOnPage("/clients/{$clientId}");
