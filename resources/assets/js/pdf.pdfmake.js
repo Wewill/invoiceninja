@@ -347,22 +347,22 @@ NINJA.copyrightCustom = function (invoice) {
   var copyright_includes = [];
 
   if (invoice.copyright_included)
-    copyright_includes.push(invoiceLabels.sel_exclusivity + " ("+invoice.exclusivity_cf+")");
+    copyright_includes.push($('#invoice_exclusivity').find('option:selected').text() + " (" + invoice.duration_cf + ")");
   else
     copyright_includes.push(invoiceLabels.sel_exclusivity);
 
   if (invoice.copyright_included)
-    copyright_includes.push(invoiceLabels.sel_utilization + " ("+invoice.utilization_cf+")");
+    copyright_includes.push($('#invoice_utilization').find('option:selected').text() + " (" + invoice.duration_cf + ")");
   else
     copyright_includes.push(invoiceLabels.sel_utilization);
 
   if (invoice.copyright_included)
-    copyright_includes.push(invoiceLabels.sel_duration + " ("+invoice.duration_cf+")");
+    copyright_includes.push($('#invoice_duration').find('option:selected').text() + " (" + invoice.duration_cf + ")");
   else
     copyright_includes.push(invoiceLabels.sel_duration);
 
   if (invoice.copyright_included)
-    copyright_includes.push(invoiceLabels.sel_scope_visibility + " ("+invoice.scope_visibility_cf+")");
+    copyright_includes.push($('#invoice_scope_visibility').find('option:selected').text() + " (" + invoice.duration_cf + ")");
   else
     copyright_includes.push(invoiceLabels.sel_scope_visibility);
 

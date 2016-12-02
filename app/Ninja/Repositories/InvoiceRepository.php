@@ -684,8 +684,7 @@ class InvoiceRepository extends BaseRepository
 	    $clone->public_id = Invoice::withTrashed()->max('public_id') + 1;
 
 	    if ($partial) {
-		    $clone->amount *= 0.3;
-		    $clone->balance *= 0.3;
+		    $clone->partial =  $clone->amount * 0.3;
 	    }
 
         // if the invoice prefix is diff than quote prefix, use the same number for the invoice (if it's available)
