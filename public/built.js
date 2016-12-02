@@ -62795,19 +62795,19 @@ NINJA.copyrightCustom = function (invoice) {
   var data = [];
 
   data.push([
-    {text: 'Cession de droits d\'auteur', style: ['copyrightHeader', 'copyrightLabel']},
+    {text: invoiceLabels.copyrights, style: ['copyrightHeader', 'copyrightLabel']},
     {text: invoice.copyright_amount ? invoice.copyright_amount : invoiceLabels.copyright_included, style: ['copyrightHeader', 'copyrightValue']}
   ]);
 
   var copyright_includes = [];
 
   if (invoice.copyright_included)
-    copyright_includes.push($('#invoice_exclusivity').find('option:selected').text() + " (" + invoice.duration_cf + ")");
+    copyright_includes.push($('#invoice_exclusivity').find('option:selected').text() + " (" + invoice.exclusivity_cf + ")");
   else
     copyright_includes.push(invoiceLabels.sel_exclusivity);
 
   if (invoice.copyright_included)
-    copyright_includes.push($('#invoice_utilization').find('option:selected').text() + " (" + invoice.duration_cf + ")");
+    copyright_includes.push($('#invoice_utilization').find('option:selected').text() + " (" + invoice.utilization_cf + ")");
   else
     copyright_includes.push(invoiceLabels.sel_utilization);
 
@@ -62817,12 +62817,12 @@ NINJA.copyrightCustom = function (invoice) {
     copyright_includes.push(invoiceLabels.sel_duration);
 
   if (invoice.copyright_included)
-    copyright_includes.push($('#invoice_scope_visibility').find('option:selected').text() + " (" + invoice.duration_cf + ")");
+    copyright_includes.push($('#invoice_scope_visibility').find('option:selected').text() + " (" + invoice.scope_visibility_cf + ")");
   else
     copyright_includes.push(invoiceLabels.sel_scope_visibility);
 
   data.push([
-    {text: 'Autorisation d\'utilisation et de représentation donnée pour: ' +
+    {text: invoiceLabels.auth_given_for +
     (copyright_includes.length ? copyright_includes.join(', ') : '—'),
       colSpan: 2},
     {text: ' '}

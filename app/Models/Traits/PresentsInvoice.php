@@ -206,6 +206,8 @@ trait PresentsInvoice
 	        'sel_utilization',
 	        'sel_duration',
 	        'sel_scope_visibility',
+	        'auth_given_for',
+	        'copyrights',
         ];
 
         foreach ($fields as $field) {

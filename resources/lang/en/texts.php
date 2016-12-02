@@ -2174,8 +2174,8 @@ $LANG = array(
 	'is_copyright_included' => 'Copyright included?',
 	'copyright_amount' => 'Copyright amount',
 
-	//'' => 'Cession de droits d\'auteur',
-	//'' => 'Autorisation d\'utilisation et de représentation donnée pour',
+	'copyrights' => 'Copyrights',
+	'auth_given_for' => 'Authorization for use and representation given for: ',
 
 	'sel_exclusivity' => 'Exclusivity',
 	'sel_utilization' => 'Utilization',
