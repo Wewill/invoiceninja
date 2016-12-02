@@ -2184,7 +2184,7 @@ $LANG = array(
     'ut_european' => 'Européene',
     'ut_world' => 'Mondiale',
 
-    'du_period' => '{1}Pour 1 :period|[2,Inf] For :count :period',
+    'du_period' => '{1}Pour 1 :period|[2,Inf] Pour :count :period',
     'du_period_legal' => 'Pour durée maximum légale',
     'du_day' => 'journée',
     'du_week' => 'semaine',
