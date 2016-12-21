@@ -297,7 +297,6 @@ class AccountController extends BaseController
                 'title' => trans("texts.{$section}"),
                 'section' => $section,
             ];
-
             return View::make("accounts.{$section}", $data);
         }
     }
@@ -947,7 +946,12 @@ class AccountController extends BaseController
                 $account->invoice_terms = Input::get('invoice_terms');
                 $account->invoice_footer = Input::get('invoice_footer');
                 $account->quote_terms = Input::get('quote_terms');
+                $account->invoice_needs = Input::get('invoice_needs');
+                $account->invoice_delays = Input::get('invoice_delays');
+                $account->invoice_specifications = Input::get('invoice_specifications');
+                $account->quote_terms = Input::get('quote_terms');
                 $account->auto_convert_quote = Input::get('auto_convert_quote');
+                $account->auto_convert_quote_to_partial = Input::get('auto_convert_quote_to_partial');
                 $account->recurring_invoice_number_prefix = Input::get('recurring_invoice_number_prefix');
 
                 if (Input::has('recurring_hour')) {

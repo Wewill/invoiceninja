@@ -198,6 +198,16 @@ trait PresentsInvoice
             'company_name',
             'website',
             'phone',
+	        'order_from',
+	        'reference',
+	        'title',
+	        'credit_note_number',
+	        'sel_exclusivity',
+	        'sel_utilization',
+	        'sel_duration',
+	        'sel_scope_visibility',
+	        'auth_given_for',
+	        'copyrights',
         ];
 
         foreach ($fields as $field) {

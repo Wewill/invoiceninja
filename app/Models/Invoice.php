@@ -39,6 +39,10 @@ class Invoice extends EntityModel implements BalanceAffecting
         'tax_rate1',
         'tax_name2',
         'tax_rate2',
+	    'exclusivity_cf',
+	    'utilization_cf',
+	    'duration_cf',
+	    'scope_visibility_cf'
     ];
 
     /**
@@ -50,6 +54,10 @@ class Invoice extends EntityModel implements BalanceAffecting
         'client_enable_auto_bill' => 'boolean',
         'has_expenses' => 'boolean',
     ];
+
+	protected $appends = [
+		'quote_number'
+	];
 
     // used for custom invoice numbers
     /**
@@ -93,6 +101,14 @@ class Invoice extends EntityModel implements BalanceAffecting
      */
     public static $fieldTerms = 'terms';
 
+	/**
+	 * @return string|null
+	 */
+	public function getQuoteNumberAttribute()
+	{
+		return self::find($this->quote_id)->invoice_number ?? null;
+	}
+
     /**
      * @return array
      */
@@ -109,6 +125,60 @@ class Invoice extends EntityModel implements BalanceAffecting
             Invoice::$fieldTerms,
         ];
     }
+
+    public static function selExclusivityOptions()
+    {
+	    return [
+	    	0 => trans('texts.no'),
+	    	1 => trans('texts.yes'),
+	    ];
+    }
+
+	public static function selUtilizationOptions()
+	{
+		return [
+			'0.1' => trans('texts.ut_local'),
+			'0.2' => trans('texts.ut_national'),
+			1 => trans('texts.ut_european'),
+			2 => trans('texts.ut_world'),
+		];
+	}
+
+	public static function selDurationOptions()
+	{
+		return [
+			'0.01' => trans_choice('texts.du_period', 1, ['period' => trans('texts.du_day')]) , 
+			'0.02' => trans_choice('texts.du_period', 1, ['period' => trans('texts.du_week')]) ,
+			'0.03' => trans_choice('texts.du_period', 1, ['period' => trans('texts.du_month')]) ,
+			'0.05' => trans_choice('texts.du_period', 3, ['period' => trans('texts.du_months')]) ,
+			'0.08' => trans_choice('texts.du_period', 6, ['period' => trans('texts.du_months')]) ,
+			'0.1' => trans_choice('texts.du_period', 1, ['period' => trans('texts.du_year')]) ,
+			'0.15' => trans_choice('texts.du_period', 2, ['period' => trans('texts.du_years')]) ,
+			'0.2' => trans_choice('texts.du_period', 3, ['period' => trans('texts.du_years')]) ,
+			'0.25' => trans_choice('texts.du_period', 4, ['period' => trans('texts.du_years')]) ,
+			'0.3' => trans_choice('texts.du_period', 5, ['period' => trans('texts.du_years')]) ,
+			'0.35' => trans_choice('texts.du_period', 6, ['period' => trans('texts.du_years')]) ,
+			'0.4' => trans_choice('texts.du_period', 7, ['period' => trans('texts.du_years')]) ,
+			'0.45' => trans_choice('texts.du_period', 8, ['period' => trans('texts.du_years')]) ,
+			'0.5' => trans_choice('texts.du_period', 10, ['period' => trans('texts.du_years')]) ,
+			'0.6' => trans_choice('texts.du_period', 15, ['period' => trans('texts.du_years')]) ,
+			'0.7' => trans_choice('texts.du_period', 20, ['period' => trans('texts.du_years')]) ,
+			'0.8' => trans_choice('texts.du_period', 30, ['period' => trans('texts.du_years')]) ,
+			'0.9' => trans_choice('texts.du_period', 40, ['period' => trans('texts.du_years')]) ,
+			1 => trans_choice('texts.du_period', 50, ['period' => trans('texts.du_years')]) ,
+			2 => trans('texts.du_period_legal') ,
+		];
+	}
+
+	public static function selScopeVisibilityOptions()
+	{
+		return [
+			"0.1" => trans('texts.sc_low'),
+			"0.2" => trans('texts.sc_med'),
+			"0.5" => trans('texts.sc_high'),
+			"1" => trans('texts.sc_very_high'),
+		];
+	}
 
     /**
      * @return array
@@ -293,6 +363,14 @@ class Invoice extends EntityModel implements BalanceAffecting
     public function invoice_design()
     {
         return $this->belongsTo('App\Models\InvoiceDesign');
+    }
+
+	/**
+	 * @return mixed
+	 */
+    public function credit_note()
+    {
+	    return $this->belongsTo('App\Models\CreditNote', 'id', 'invoice_id');
     }
 
     /**
@@ -659,6 +737,9 @@ class Invoice extends EntityModel implements BalanceAffecting
             'custom_taxes1',
             'custom_taxes2',
             'partial',
+	        'order_from',
+	        'title',
+	        'reference',
             'has_tasks',
             'custom_text_value1',
             'custom_text_value2',
@@ -696,6 +777,8 @@ class Invoice extends EntityModel implements BalanceAffecting
             'postal_code',
             'work_phone',
             'work_email',
+            'work_mobile',
+            'work_fax',
             'country',
             'currency_id',
             'custom_label1',
@@ -1051,8 +1134,6 @@ class Invoice extends EntityModel implements BalanceAffecting
             default:
                 return false;
         }
-
-        return false;
     }
 
     /**

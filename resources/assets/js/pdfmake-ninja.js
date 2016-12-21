@@ -624,7 +624,7 @@ NINJA.invoiceDetails = function(invoice) {
     data.push([
         {text: invoiceLabels.balance_due, style: ['invoiceDetailBalanceDueLabel']},
         {text: formatMoneyInvoice(invoice.total_amount, invoice), style: ['invoiceDetailBalanceDue']}
-    ])
+    ]);
 
     if (NINJA.parseFloat(invoice.partial)) {
         data.push([

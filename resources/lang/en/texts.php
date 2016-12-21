@@ -6,6 +6,8 @@ $LANG = array(
     'name' => 'Name',
     'website' => 'Website',
     'work_phone' => 'Phone',
+    'work_mobile' => 'Mobile phone',
+    'work_fax' => 'Fax',
     'address' => 'Address',
     'address1' => 'Street',
     'address2' => 'Apt/Suite',
@@ -18,6 +20,9 @@ $LANG = array(
     'last_name' => 'Last Name',
     'phone' => 'Phone',
     'email' => 'Email',
+    'order_from' => 'Order from',
+    'title' => 'Title',
+    'reference' => 'Reference',
     'additional_info' => 'Additional Info',
     'payment_terms' => 'Payment Terms',
     'currency_id' => 'Currency',
@@ -30,6 +35,9 @@ $LANG = array(
     'due_date' => 'Due Date',
     'invoice_number' => 'Invoice Number',
     'invoice_number_short' => 'Invoice #',
+    'credit_note_number' => 'Credit Note Number',
+    'credit_note_number_short' => 'Credit Note #',
+	'credit_note' => 'Credit Note',
     'po_number' => 'PO Number',
     'po_number_short' => 'PO #',
     'frequency_id' => 'How Often',
@@ -58,6 +66,7 @@ $LANG = array(
     'invoice_terms' => 'Invoice Terms',
     'save_as_default_terms' => 'Save as default terms',
     'download_pdf' => 'Download PDF',
+	'download_credit_note_pdf' => 'Download credit note PDF',
     'pay_now' => 'Pay Now',
     'save_invoice' => 'Save Invoice',
     'clone_invoice' => 'Clone Invoice',
@@ -460,7 +469,19 @@ $LANG = array(
     'match_address' => '*Address must match address associated with credit card.',
     'click_once' => '*Please click "PAY NOW" only once - transaction may take up to 1 minute to process.',
     'invoice_footer' => 'Invoice Footer',
+    'invoice_needs_delays' => 'Needs and delays',
+    'invoice_needs' => 'Needs',
+    'invoice_delays' => 'Delays',
+    'invoice_specifications' => 'Specifications',
+
     'save_as_default_footer' => 'Save as default footer',
+    'save_as_default_invoice_needs' => 'Save as default needs',
+    'save_as_default_invoice_delays' => 'Save as default delays',
+    'save_as_default_invoice_specifications' => 'Save as default specifications',
+	'reset_invoice_needs' => 'Reset needs',
+	'reset_invoice_delays' => 'Reset delays',
+	'reset_invoice_specifications' => 'Reset specifications',
+
     'token_management' => 'Token Management',
     'tokens' => 'Tokens',
     'add_token' => 'Add Token',
@@ -971,6 +992,8 @@ $LANG = array(
     'quote_settings' => 'Quote Settings',
     'auto_convert_quote' => 'Auto convert quote',
     'auto_convert_quote_help' => 'Automatically convert a quote to an invoice when approved by a client.',
+    'auto_convert_quote_to_partial' => 'Auto convert quote to partial',
+    'auto_convert_quote_to_partial_help' => 'Automatically convert a quote to an partial invoice with 30% deposit when approved by a client.',
     'validate' => 'Validate',
     'info' => 'Info',
     'imported_expenses' => 'Successfully created :count_vendors vendor(s) and :count_expenses expense(s)',
@@ -2145,7 +2168,42 @@ $LANG = array(
     'expense_will_create' => 'expense will be created',
     'expenses_will_create' => 'expenses will be created',
     'created_expenses' => 'Successfully created :count expense(s)',
-    
+
+
+	'copyright_included' => 'Included',
+	'is_copyright_included' => 'Copyright included?',
+	'copyright_amount' => 'Copyright amount',
+
+	'copyrights' => 'Copyrights',
+	'auth_given_for' => 'Authorization for use and representation given for: ',
+
+	'sel_exclusivity' => 'Exclusivity',
+	'sel_utilization' => 'Utilization',
+	'sel_duration' => 'Duration',
+	'sel_scope_visibility' => 'Scope - Visibility',
+
+	'ex_no' => 'No',
+	'ex_yes' => 'Exclusivity',
+
+	'ut_local' => 'Local',
+	'ut_national' => 'National',
+	'ut_european' => 'European',
+	'ut_world' => 'World',
+
+	'du_period' => '{1}For 1 :period|[2,Inf] For :count :period',
+    'du_period_legal' => 'For legal duration',
+	'du_day' => 'day',
+	'du_week' => 'week',
+	'du_month' => 'month',
+	'du_months' => 'months',
+	'du_year' => 'year',
+	'du_years' => 'years',
+
+	'sc_low' => 'Low scope',
+	'sc_med' => 'Medium scope',
+	'sc_high' => 'High scope',
+	'sc_very_high' => 'Very high scope',
+
 );
 
 return $LANG;

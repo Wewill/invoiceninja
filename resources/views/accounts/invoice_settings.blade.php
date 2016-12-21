@@ -222,6 +222,11 @@
                     ->text(trans('texts.enable'))
                     ->blockHelp(trans('texts.auto_convert_quote_help')) !!}
         </div>
+	    <div class="panel-body form-padding-right">
+		    {!! Former::checkbox('auto_convert_quote_to_partial')
+					->text(trans('texts.enable'))
+					->blockHelp(trans('texts.auto_convert_quote_to_partial_help')) !!}
+	    </div>
     </div>
 
     <div class="panel panel-default">
@@ -235,6 +240,8 @@
                     <li role="presentation" class="active"><a href="#invoice_terms" aria-controls="invoice_terms" role="tab" data-toggle="tab">{{ trans('texts.invoice_terms') }}</a></li>
                     <li role="presentation"><a href="#invoice_footer" aria-controls="invoice_footer" role="tab" data-toggle="tab">{{ trans('texts.invoice_footer') }}</a></li>
                     <li role="presentation"><a href="#quote_terms" aria-controls="quote_terms" role="tab" data-toggle="tab">{{ trans('texts.quote_terms') }}</a></li>
+                    <li role="presentation"><a href="#invoice_needs_delays" aria-controls="invoice_needs_delays" role="tab" data-toggle="tab">{{ trans('texts.invoice_needs_delays') }}</a></li>
+                    <li role="presentation"><a href="#invoice_specifications" aria-controls="invoice_specifications" role="tab" data-toggle="tab">{{ trans('texts.invoice_specifications') }}</a></li>
                 </ul>
             </div>
             <div class="tab-content">
@@ -259,6 +266,23 @@
                                 ->rows(4) !!}
                     </div>
                 </div>
+	            <div role="tabpanel" class="tab-pane" id="invoice_needs_delays">
+		            <div class="panel-body">
+			            {!! Former::textarea('invoice_needs')
+								->label(trans('texts.invoice_needs'))
+								->rows(4) !!}
+			            {!! Former::textarea('invoice_delays')
+								->label(trans('texts.invoice_delays'))
+								->rows(4) !!}
+		            </div>
+	            </div>
+	            <div role="tabpanel" class="tab-pane" id="invoice_specifications">
+		            <div class="panel-body">
+			            {!! Former::textarea('invoice_specifications')
+								->label(trans('texts.invoice_specifications'))
+								->rows(4) !!}
+		            </div>
+	            </div>
             </div>
         </div>
     </div>

@@ -698,6 +698,14 @@ function calculateAmounts(invoice) {
 
   invoice.subtotal_amount = total;
 
+  if (invoice.copyright_included) {
+    invoice.copyright_amount = total * (NINJA.parseFloat(invoice.exclusivity_cf) + NINJA.parseFloat(invoice.utilization_cf) +
+      NINJA.parseFloat(invoice.duration_cf) + NINJA.parseFloat(invoice.scope_visibility_cf));
+
+    total += invoice.copyright_amount;
+    invoice.copyright_amount = invoice.formatMoney(invoice.copyright_amount);
+  }
+
   var discount = 0;
   if (invoice.discount != 0) {
     if (parseInt(invoice.is_amount_discount)) {
@@ -742,7 +750,9 @@ function calculateAmounts(invoice) {
     total += roundToTwo(invoice.custom_value2);
   }
 
+
   invoice.total_amount = roundToTwo(roundToTwo(total) - (roundToTwo(invoice.amount) - roundToTwo(invoice.balance)));
+
   invoice.discount_amount = discount;
   invoice.tax_amount1 = taxAmount1;
   invoice.tax_amount2 = taxAmount2;

@@ -169,10 +169,42 @@ function InvoiceModel(data) {
     self.default_terms = ko.observable(account.{{ $entityType }}_terms);
     self.terms_placeholder = ko.observable({{ !$invoice->id && $account->{"{$entityType}_terms"} ? "account.{$entityType}_terms" : false}});
     self.set_default_terms = ko.observable(false);
-    self.invoice_footer = ko.observable('');
+
+	self.invoice_footer = ko.observable('');
     self.default_footer = ko.observable(account.invoice_footer);
     self.footer_placeholder = ko.observable({{ !$invoice->id && $account->invoice_footer ? 'account.invoice_footer' : false}});
     self.set_default_footer = ko.observable(false);
+
+	self.invoice_needs = ko.observable('');
+	self.default_invoice_needs = ko.observable(account.invoice_needs);
+	self.invoice_needs_placeholder = ko.observable({{ !$invoice->id && $account->invoice_needs ? 'account.invoice_needs' : false}});
+	self.set_default_invoice_needs = ko.observable(false);
+
+	self.invoice_delays = ko.observable('');
+	self.default_invoice_delays = ko.observable(account.invoice_delays);
+	self.invoice_delays_placeholder = ko.observable({{ !$invoice->id && $account->invoice_delays ? 'account.invoice_delays' : false}});
+	self.set_default_invoice_delays = ko.observable(false);
+
+	self.invoice_specifications = ko.observable('');
+	self.default_invoice_specifications = ko.observable(account.invoice_specifications);
+	self.invoice_specifications_placeholder = ko.observable({{ !$invoice->id && $account->invoice_specifications ? 'account.invoice_specifications' : false}});
+	self.set_default_invoice_specifications = ko.observable(false);
+
+	self.reference = ko.observable('');
+	self.default_reference = ko.observable(self.reference);
+	self.reference_placeholder = ko.observable({{ $invoice->reference ? 'self.reference' : false }});
+	self.set_default_reference = ko.observable(false);
+
+	self.order_from = ko.observable('');
+	self.default_order_from = ko.observable(self.order_from);
+	self.order_from_placeholder = ko.observable({{ $invoice->order_from ? 'self.order_from' : false }});
+	self.set_default_order_from = ko.observable(false);
+
+	self.title = ko.observable('');
+	self.default_title = ko.observable(self.title);
+	self.title_placeholder = ko.observable({{ $invoice->title ? 'self.title' : false }});
+	self.set_default_title = ko.observable(false);
+
     self.public_notes = ko.observable('');
     self.po_number = ko.observable('');
     self.invoice_date = ko.observable('');
@@ -208,6 +240,14 @@ function InvoiceModel(data) {
     self.custom_taxes2 = ko.observable(false);
     self.custom_text_value1 = ko.observable();
     self.custom_text_value2 = ko.observable();
+
+	self.copyright_amount = ko.observable();
+    self.copyright_included = ko.observable();
+    self.exclusivity_cf = ko.observable();
+    self.utilization_cf = ko.observable();
+    self.duration_cf = ko.observable();
+    self.scope_visibility_cf = ko.observable();
+
 
     self.mapping = {
         'client': {
@@ -326,6 +366,39 @@ function InvoiceModel(data) {
         },
         owner: this
     });
+
+	self.wrapped_invoice_needs = ko.computed({
+		read: function() {
+			return this.invoice_needs();
+		},
+		write: function(value) {
+			value = wordWrapText(value, 600);
+			self.invoice_needs(value);
+		},
+		owner: this
+	});
+
+	self.wrapped_invoice_delays = ko.computed({
+		read: function() {
+			return this.invoice_delays();
+		},
+		write: function(value) {
+			value = wordWrapText(value, 600);
+			self.invoice_delays(value);
+		},
+		owner: this
+	});
+
+	self.wrapped_invoice_specifications = ko.computed({
+		read: function() {
+			return this.invoice_specifications();
+		},
+		write: function(value) {
+			value = wordWrapText(value, 600);
+			self.invoice_specifications(value);
+		},
+		owner: this
+	});
 
     self.removeItem = function(item) {
         self.invoice_items.remove(item);
@@ -490,6 +563,19 @@ function InvoiceModel(data) {
         var taxAmount1 = roundToTwo(total * (parseFloat(self.tax_rate1())/100));
         var taxAmount2 = roundToTwo(total * (parseFloat(self.tax_rate2())/100));
         total = NINJA.parseFloat(total) + taxAmount1 + taxAmount2;
+
+	    if (self.copyright_included()) {
+		    var copyright_amount = total * (NINJA.parseFloat(self.exclusivity_cf()) +
+			    NINJA.parseFloat(self.utilization_cf()) + NINJA.parseFloat(self.duration_cf()) +
+			    NINJA.parseFloat(self.scope_visibility_cf()));
+
+		    total += copyright_amount;
+		    self.copyright_amount(self.formatMoney(copyright_amount));
+
+	    } else {
+		    self.copyright_amount('{{ trans('texts.copyright_included') }}');
+	    }
+
         total = roundToTwo(total);
 
         var taxes = self.totals.itemTaxes();

@@ -1,3 +1,5 @@
+process.env.DISABLE_NOTIFIER = true; //disable notifications
+
 var elixir = require('laravel-elixir');
 
 /**
@@ -72,6 +74,7 @@ elixir(function(mix) {
     mix.scripts([
         'pdf_viewer.js',
         'compatibility.js',
+        'pdf-images.js',
         'pdfmake.js',
         'vfs.js'
     ], 'public/pdf.built.js');
@@ -113,7 +116,7 @@ elixir(function(mix) {
         bowerDir + '/sweetalert/dist/sweetalert-dev.js',
         'bootstrap-combobox.js',
         'script.js',
-        'pdf.pdfmake.js',
+        'pdf.pdfmake.js'
     ], 'public/built.js');
 
 

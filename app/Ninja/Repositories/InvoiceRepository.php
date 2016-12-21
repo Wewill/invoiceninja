@@ -1,6 +1,7 @@
 <?php namespace App\Ninja\Repositories;
 
 use App\Models\Account;
+use App\Models\CreditNote;
 use DB;
 use Utils;
 use Auth;
@@ -285,18 +286,30 @@ class InvoiceRepository extends BaseRepository
 
         $invoice->fill($data);
 
-        if ((isset($data['set_default_terms']) && $data['set_default_terms'])
-            || (isset($data['set_default_footer']) && $data['set_default_footer'])) {
-            if (isset($data['set_default_terms']) && $data['set_default_terms']) {
-                $account->{"{$invoice->getEntityType()}_terms"} = trim($data['terms']);
-            }
-            if (isset($data['set_default_footer']) && $data['set_default_footer']) {
-                $account->invoice_footer = trim($data['invoice_footer']);
-            }
-            $account->save();
+
+        if (!empty($data['set_default_terms'])) {
+            $account->{"{$invoice->getEntityType()}_terms"} = trim($data['terms']);
         }
 
-        if (isset($data['invoice_number']) && !$invoice->is_recurring) {
+        if (!empty($data['set_default_footer'])) {
+            $account->invoice_footer = trim($data['invoice_footer']);
+        }
+
+        if (!empty($data['set_default_invoice_needs'])) {
+	        $account->invoice_needs = trim($data['invoice_needs']);
+        }
+
+	    if (!empty($data['set_default_invoice_delays'])) {
+		    $account->invoice_delays = trim($data['invoice_delays']);
+	    }
+
+	    if (!empty($data['set_default_invoice_specifications'])) {
+		    $account->invoice_specifications = trim($data['invoice_specifications']);
+	    }
+
+	    $account->save();
+
+	    if (isset($data['invoice_number']) && !$invoice->is_recurring) {
             $invoice->invoice_number = trim($data['invoice_number']);
         }
 
@@ -309,6 +322,15 @@ class InvoiceRepository extends BaseRepository
         if (isset($data['partial'])) {
             $invoice->partial = round(Utils::parseFloat($data['partial']), 2);
         }
+	    if (isset($data['order_from'])) {
+		    $invoice->order_from = $data['order_from'];
+	    }
+	    if (isset($data['reference'])) {
+		    $invoice->reference = $data['reference'];
+	    }
+	    if (isset($data['title'])) {
+		    $invoice->title = $data['title'];
+	    }
         if (isset($data['invoice_date_sql'])) {
             $invoice->invoice_date = $data['invoice_date_sql'];
         } elseif (isset($data['invoice_date'])) {
@@ -359,8 +381,17 @@ class InvoiceRepository extends BaseRepository
             $invoice->terms = '';
         }
 
-        $invoice->invoice_footer = (isset($data['invoice_footer']) && trim($data['invoice_footer'])) ? trim($data['invoice_footer']) : (!$publicId && $account->invoice_footer ? $account->invoice_footer : '');
-        $invoice->public_notes = isset($data['public_notes']) ? trim($data['public_notes']) : null;
+        $invoice->invoice_footer = (!empty($data['invoice_footer'])) ? trim($data['invoice_footer']) :
+	        ((!$publicId && $account->invoice_footer) ? $account->invoice_footer : '');
+	    $invoice->invoice_needs = (!empty($data['invoice_needs'])) ? trim($data['invoice_needs']) :
+		    ((!$publicId && $account->invoice_needs) ? $account->invoice_needs : '');
+	    $invoice->invoice_delays = (!empty($data['invoice_delays'])) ? trim($data['invoice_delays']) :
+		    ((!$publicId && $account->invoice_delays) ? $account->invoice_delays : '');
+	    $invoice->invoice_specifications = (!empty($data['invoice_specifications'])) ?
+		    trim($data['invoice_specifications']) :
+		    ((!$publicId && $account->invoice_specifications) ? $account->invoice_specifications : '');
+
+        $invoice->public_notes = !empty($data['public_notes']) ? trim($data['public_notes']) : null;
 
         // process date variables if not recurring
         if(!$invoice->is_recurring) {
@@ -385,8 +416,7 @@ class InvoiceRepository extends BaseRepository
         $itemTax = 0;
 
         foreach ($data['invoice_items'] as $item) {
-            $item = (array) $item;
-            if (!$item['cost'] && !$item['product_key'] && !$item['notes']) {
+            if (empty($item['cost']) || empty($item['qty'])) {
                 continue;
             }
 
@@ -478,6 +508,28 @@ class InvoiceRepository extends BaseRepository
         }
 
         $invoice->amount = $total;
+
+	    if (!empty($data['copyright_included'])) {
+		    $invoice->copyright_included = 1;
+
+		    $invoice->exclusivity_cf = $data['invoice_exclusivity'];
+		    $invoice->utilization_cf = $data['invoice_utilization'];
+		    $invoice->duration_cf = $data['invoice_duration'];
+		    $invoice->scope_visibility_cf = $data['invoice_scope_visibility'];
+
+		    $copyright_cfs = ($invoice->exclusivity_cf + $invoice->utilization_cf +
+			    $invoice->duration_cf + $invoice->scope_visibility_cf);
+
+		    $invoice->amount += $invoice->amount * $copyright_cfs;
+		    $invoice->balance += $invoice->balance * $copyright_cfs;
+	    } else {
+		    $invoice->copyright_included = 0;
+		    $invoice->exclusivity_cf = 0;
+			$invoice->utilization_cf = 0;
+			$invoice->duration_cf = 0;
+			$invoice->scope_visibility_cf = 0;
+	    }
+
         $invoice->save();
 
         if ($publicId) {
@@ -516,9 +568,10 @@ class InvoiceRepository extends BaseRepository
             }
         }
 
+	    InvoiceItem::where(['invoice_id' => $invoice->id])->delete();
+
         foreach ($data['invoice_items'] as $item) {
-            $item = (array) $item;
-            if (empty($item['cost']) && empty($item['product_key']) && empty($item['notes']) && empty($item['custom_value1']) && empty($item['custom_value2'])) {
+            if (empty($item['cost']) || empty($item['product_key']) || empty($item['qty'])) {
                 continue;
             }
 
@@ -542,23 +595,19 @@ class InvoiceRepository extends BaseRepository
                 }
             }
 
-            if ($productKey = trim($item['product_key'])) {
-                if (\Auth::user()->account->update_products && ! $invoice->has_tasks && ! $invoice->has_expenses) {
-                    $product = Product::findProductByKey($productKey);
-                    if (!$product) {
-                        if (Auth::user()->can('create', ENTITY_PRODUCT)) {
-                            $product = Product::createNew();
-                            $product->product_key = trim($item['product_key']);
-                        }
-                        else{
-                            $product = null;
-                        }
-                    }
-                    if ($product && (Auth::user()->can('edit', $product))) {
-                        $product->notes = ($task || $expense) ? '' : $item['notes'];
-                        $product->cost = $expense ? 0 : $item['cost'];
-                        $product->save();
-                    }
+
+            if (\Auth::user()->account->update_products && ! $invoice->has_tasks && ! $invoice->has_expenses) {
+	            $productKey = trim($item['product_key']);
+	            $product = Product::findProductByKey($productKey);
+                if (!$product && Auth::user()->can('create', ENTITY_PRODUCT)) {
+                    $product = Product::createNew();
+                    $product->product_key = trim($item['product_key']);
+                }
+
+                if ($product && (Auth::user()->can('edit', $product))) {
+                    $product->notes = ($task || $expense) ? '' : $item['notes'];
+                    $product->cost = $expense ? 0 : $item['cost'];
+                    $product->save();
                 }
             }
 
@@ -590,18 +639,53 @@ class InvoiceRepository extends BaseRepository
         return $invoice;
     }
 
+
+	/**
+	 * @param $invoice
+	 */
+	public function delete($invoice)
+	{
+		if ($invoice->is_deleted) {
+			return;
+		}
+
+		$invoice->is_deleted = true;
+		$invoice->save();
+
+		$credit_note = CreditNote::updateOrCreate([
+			'invoice_id' => $invoice->id,
+		]);
+
+		$credit_note->credit_note_number = str_pad($credit_note->id, 4, '0', STR_PAD_LEFT);
+
+		$credit_note->save();
+
+		$invoice->delete();
+
+		$className = $this->getEventClass($invoice, 'Deleted');
+
+		if (class_exists($className)) {
+			event(new $className($invoice));
+		}
+	}
+
     /**
      * @param Invoice $invoice
      * @param null $quotePublicId
+     * @param bool|int $partial
      * @return mixed
      */
-    public function cloneInvoice(Invoice $invoice, $quotePublicId = null)
+    public function cloneInvoice(Invoice $invoice, $quotePublicId = null, $partial = false)
     {
         $invoice->load('invitations', 'invoice_items');
         $account = $invoice->account;
 
-        $clone = Invoice::createNew($invoice);
-        $clone->balance = $invoice->amount;
+	    $clone = $invoice->replicate();
+	    $clone->public_id = Invoice::withTrashed()->max('public_id') + 1;
+
+	    if ($partial) {
+		    $clone->partial =  $clone->amount * 0.3;
+	    }
 
         // if the invoice prefix is diff than quote prefix, use the same number for the invoice (if it's available)
         $invoiceNumber = false;
@@ -621,35 +705,6 @@ class InvoiceRepository extends BaseRepository
         $clone->invoice_number = $invoiceNumber ?: $account->getNextInvoiceNumber($clone);
         $clone->invoice_date = date_create()->format('Y-m-d');
 
-        foreach ([
-          'client_id',
-          'discount',
-          'is_amount_discount',
-          'po_number',
-          'is_recurring',
-          'frequency_id',
-          'start_date',
-          'end_date',
-          'terms',
-          'invoice_footer',
-          'public_notes',
-          'invoice_design_id',
-          'tax_name1',
-          'tax_rate1',
-          'tax_name2',
-          'tax_rate2',
-          'amount',
-          'invoice_type_id',
-          'custom_value1',
-          'custom_value2',
-          'custom_taxes1',
-          'custom_taxes2',
-          'partial',
-          'custom_text_value1',
-          'custom_text_value2', ] as $field) {
-            $clone->$field = $invoice->$field;
-        }
-
         if ($quotePublicId) {
             $clone->invoice_type_id = INVOICE_TYPE_STANDARD;
             $clone->quote_id = $quotePublicId;
@@ -663,23 +718,10 @@ class InvoiceRepository extends BaseRepository
         }
 
         foreach ($invoice->invoice_items as $item) {
-            $cloneItem = InvoiceItem::createNew($invoice);
+	        $cloneItem = $item->replicate();
+	        $cloneItem->public_id = InvoiceItem::withTrashed()->max('public_id') + 1;
 
-            foreach ([
-                'product_id',
-                'product_key',
-                'notes',
-                'cost',
-                'qty',
-                'tax_name1',
-                'tax_rate1',
-                'tax_name2',
-                'tax_rate2',
-            ] as $field) {
-                $cloneItem->$field = $item->$field;
-            }
-
-            $clone->invoice_items()->save($cloneItem);
+	        $clone->invoice_items()->save($cloneItem);
         }
 
         foreach ($invoice->documents as $document) {

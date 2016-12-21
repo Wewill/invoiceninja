@@ -47,6 +47,8 @@ class Account extends Eloquent
         'work_email',
         'website',
         'work_phone',
+        'work_fax',
+        'work_mobile',
         'address1',
         'address2',
         'city',

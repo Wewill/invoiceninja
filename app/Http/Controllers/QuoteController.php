@@ -130,17 +130,21 @@ class QuoteController extends BaseController
           'invoiceFonts' => Cache::get('fonts'),
           'invoiceLabels' => Auth::user()->account->getInvoiceLabels(),
           'isRecurring' => false,
+          'sel_exclusivity' => Invoice::selExclusivityOptions(),
+          'sel_utilization' => Invoice::selUtilizationOptions(),
+          'sel_duration' => Invoice::selDurationOptions(),
+          'sel_scope_visibility' => Invoice::selScopeVisibilityOptions(),
         ];
     }
 
     public function bulk()
     {
-        $action = Input::get('bulk_action') ?: Input::get('action');;
+        $action = Input::get('bulk_action') ?: Input::get('action');
         $ids = Input::get('bulk_public_id') ?: (Input::get('public_id') ?: Input::get('ids'));
 
         if ($action == 'convert') {
             $invoice = Invoice::with('invoice_items')->scope($ids)->firstOrFail();
-            $clone = $this->invoiceService->convertQuote($invoice);
+            $clone = $this->invoiceService->convertQuote($invoice, Auth()->user()->account->auto_convert_quote_to_partial);
 
             Session::flash('message', trans('texts.converted_to_invoice'));
             return Redirect::to('invoices/'.$clone->public_id);

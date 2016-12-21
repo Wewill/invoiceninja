@@ -6,6 +6,8 @@ $LANG = array(
     'name' => 'Nom',
     'website' => 'Site web',
     'work_phone' => 'Téléphone',
+    'work_mobile' => 'Téléphone mobile',
+    'work_fax' => 'Fax',
     'address' => 'Adresse',
     'address1' => 'Rue',
     'address2' => 'Appt/Bâtiment',
@@ -18,6 +20,9 @@ $LANG = array(
     'last_name' => 'Nom',
     'phone' => 'Téléphone',
     'email' => 'Courriel',
+    'order_from' => 'Commande de',
+    'title' => 'Intitulé',
+    'reference' => 'Référence dossier',
     'additional_info' => 'Informations complémentaires',
     'payment_terms' => 'Conditions de paiement',
     'currency_id' => 'Devise',
@@ -30,6 +35,9 @@ $LANG = array(
     'due_date' => 'Date d\'échéance',
     'invoice_number' => 'NOTE DE CESSION DE DROITS D\'AUTEUR N°', //Numéro de facture
     'invoice_number_short' => 'Facture N°', //Facture #
+	'credit_note_number' => 'Avoir N°',
+	'credit_note_number_short' => 'Avoir N°',
+	'credit_note' => 'Avoir',
     'po_number' => 'Numéro du bon de commande',
     'po_number_short' => 'Bon de commande N°', //Bon de commande #
     'frequency_id' => 'Fréquence',
@@ -58,6 +66,7 @@ $LANG = array(
     'invoice_terms' => 'Conditions de facturation',
     'save_as_default_terms' => 'Sauvegarder comme conditions par défaut',
     'download_pdf' => 'Télécharger le PDF',
+    'download_credit_note_pdf' => 'Télécharger l\'avoir PDF',
     'pay_now' => 'Payer maintenant',
     'save_invoice' => 'Sauvegarder la facture',
     'clone_invoice' => 'Dupliquer la facture',
@@ -454,7 +463,19 @@ $LANG = array(
     'match_address' => '*L\'adresse doit correspondre à l\'adresse associée à la carte de crédit.',
     'click_once' => '*S\'il vous plaît cliquer sur "PAYER MAINTENANT" une seule fois - la transaction peut prendre jusqu\'à 1 minute.',
     'invoice_footer' => 'Pied de facture',
+    'invoice_needs_delays' => 'Besoins et délais',
+    'invoice_needs' => 'Besoins',
+    'invoice_delays' => 'Délais',
+    'invoice_specifications' => 'Cahier des charges',
     'save_as_default_footer' => 'Définir comme pied de facture par défaut',
+
+    'save_as_default_invoice_needs' => 'Définir comme pied des besoins par défaut',
+    'save_as_default_invoice_delays' => 'Définir comme pied des délais par défaut',
+    'save_as_default_invoice_specifications' => 'Définir comme pied de cahier des charges par défaut',
+    'reset_invoice_needs' => 'Ràz besoins',
+    'reset_invoice_delays' => 'Ràz délais',
+    'reset_invoice_specifications' => 'Ràz cahier des charges',
+
     'token_management' => 'Gestion des jetons',
     'tokens' => 'Jetons',
     'add_token' => 'Ajouter jeton',
@@ -965,6 +986,8 @@ $LANG = array(
     'quote_settings' => 'Paramètres des devis',
     'auto_convert_quote' => 'Convertir automatiquement les devis',
     'auto_convert_quote_help' => 'Convertissez automatiquement un devis en facture dès qu\'il est approuvé par le client.',
+    'auto_convert_quote_to_partial' => 'Convertir automatiquement les devis en acompte',
+    'auto_convert_quote_to_partial_help' => 'Convertissez automatiquement un devis en facture d\'acompte avec 30% d\'acompte dès qu\'il est approuvé par le client.',
     'validate' => 'Valider',
     'info' => 'Info',
     'imported_expenses' => 'Successfully created :count_vendors vendor(s) and :count_expenses expense(s)',
@@ -2139,6 +2162,41 @@ $LANG = array(
     'expense_will_create' => 'expense will be created',
     'expenses_will_create' => 'expenses will be created',
     'created_expenses' => 'Successfully created :count expense(s)',
+
+    'copyright_included' => 'Inclus',
+    'is_copyright_included' => 'Cession de droit incluse?',
+    'copyright_amount' => 'Montant du droit d\'auteur',
+
+	'сopyrights' => 'Cession de droits d\'auteur',
+	'auth_given_for' => 'Autorisation d\'utilisation et de représentation donnée pour: ',
+
+
+    'sel_exclusivity' => 'Exclusivité d\'utilisation',
+    'sel_utilization' => 'Espace d\'utilisation',
+    'sel_duration' => 'Durée d\'utilisation',
+    'sel_scope_visibility' => 'Étendue d\'utilisation - Visibilité',
+
+    'ex_no' => 'Non exclusivité',
+    'ex_yes' => 'Exclusivité',
+
+    'ut_local' => 'Régionale',
+    'ut_national' => 'Nationale',
+    'ut_european' => 'Européene',
+    'ut_world' => 'Mondiale',
+
+    'du_period' => '{1}Pour 1 :period|[2,Inf] Pour :count :period',
+    'du_period_legal' => 'Pour durée maximum légale',
+    'du_day' => 'journée',
+    'du_week' => 'semaine',
+    'du_month' => 'mois',
+    'du_months' => 'mois',
+    'du_year' => 'an',
+    'du_years' => 'ans',
+
+    'sc_low' => 'Faible étendue',
+    'sc_med' => 'Moyenne étendue',
+    'sc_high' => 'Forte étendue',
+    'sc_very_high' => 'Très forte étendue',
     
 );
 
